@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,19 +12,28 @@ namespace Hexaplicate
     {
 
         public delegate void onClick();
-        private List<(onClick, Func<int,int,Boolean>)> registeredFunctions;
+        bool pressed = false;
+        private List<(onClick, Func<int,int,Boolean>)> registeredFunctions = new();
         /// <summary>
         /// Checks the current inputs and calls all necessary callback functions
         /// </summary>
-        void checkState()
+        public void checkState()
         {
             MouseState currentState = Mouse.GetState();
-            foreach((onClick, Func<int, int, Boolean>) mouseEvent in registeredFunctions)
-            {
-                if(mouseEvent.Item2(currentState.Position.X, currentState.Position.Y))
+            if (currentState.LeftButton == ButtonState.Pressed && !pressed)
+            { 
+                pressed = true;
+                foreach ((onClick, Func<int, int, Boolean>) mouseEvent in registeredFunctions)
                 {
-                    mouseEvent.Item1();
+                    if (mouseEvent.Item2(currentState.Position.X, currentState.Position.Y))
+                    {
+                        mouseEvent.Item1();
+                    }
                 }
+            }
+            if(currentState.LeftButton == ButtonState.Released)
+            {
+                pressed = false;
             }
         }
 

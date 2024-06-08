@@ -38,8 +38,8 @@ namespace Hexaplicate
         }
         void Hexagon.Draw(SpriteBatch batch, int xOffset, int yOffset)
         {
-			float scale = 0.1f;
-			if(hexagonTexture[0] == null)
+			float scale = Constants.HEXAGON_SCALE;
+			if (hexagonTexture[0] == null)
             {
 				throw new InvalidOperationException("Image has not been loaded for this hexagon");
             }

@@ -1,16 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Diagnostics;
 
 namespace Hexaplicate
 {
     public class Game1 : Game
     {
 
-        Texture2D hexagonTexture;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Grid _grid;
+        private UIManager _uiManager;
 
         public Game1()
         {
@@ -25,6 +26,8 @@ namespace Hexaplicate
         {
             // TODO: Add your initialization logic here
             _grid = new Grid();
+            _uiManager = new UIManager();
+            _grid.RegisterHexs(_uiManager, (640, 360));
             base.Initialize();
         }
 
@@ -41,7 +44,7 @@ namespace Hexaplicate
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             // TODO: Add your update logic here
-
+            _uiManager.checkState();
             base.Update(gameTime);
         }
 

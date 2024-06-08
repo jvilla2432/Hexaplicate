@@ -14,5 +14,7 @@ namespace Hexaplicate
         /// </summary>
         /// <param name="batch">SpriteBatch to draw on</param>
         public void Draw(SpriteBatch batch, int xOffset, int yOffset);
+
+        
     }
 }
