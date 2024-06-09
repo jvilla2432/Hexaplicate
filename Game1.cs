@@ -27,7 +27,8 @@ namespace Hexaplicate
             // TODO: Add your initialization logic here
             _grid = new Grid();
             _uiManager = new UIManager();
-            _grid.RegisterHexs(_uiManager, (640, 360));
+            _grid.setCoordinates((340, 330));
+            _grid.RegisterHexs(_uiManager);
             base.Initialize();
         }
 
@@ -54,7 +55,7 @@ namespace Hexaplicate
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
             //_spriteBatch.Draw(hexagonTexture, new Rectangle(0, 0, (int)(612 * scale),(int)(530*scale)), Color.White);
-            _grid.Draw(_spriteBatch, (640,360));
+            _grid.Draw(_spriteBatch);
             _spriteBatch.End();
 
             base.Draw(gameTime);

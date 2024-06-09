@@ -11,24 +11,33 @@ namespace Hexaplicate
     internal class Grid
     {
         private Hexagon[,] gridHexagons = new Hexagon[7,7];
+        private (int, int) coordinates = (0, 0);
+
+        public IEnumerable<(int,int)> returnHexagonPairs()
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    if ((i + j > 2) && (i + j < 10))
+                    {
+                        yield return (i, j);
+                    }
+                }
+            }
+        }
         /// <summary>
         /// Initalize Grid with all empty hexagons.
         /// </summary>
         public Grid()
         {
             //Only sums greater than 2 or less than 10 map to valid hexagon spots.
-            for(int i = 0; i < 7; i++)
+            foreach (var pair in returnHexagonPairs())
             {
-                for(int j = 0; j < 7; j++)
-                {
-                    if((i+j > 2) && (i+j < 10))
-                    {
-                        gridHexagons[i, j] = new EssenceHexagon();
-                    }
-                }
+                gridHexagons[pair.Item1,pair.Item2] = new EssenceHexagon();
+
             }
         }
-
         /// <summary>
         /// Places newHex into coordinates and returns the Hexagon at coordinates 
         /// </summary>
@@ -42,48 +51,46 @@ namespace Hexaplicate
             return oldHex;
         }
 
+        public void setCoordinates( (int,int) coords)
+        {
+            coordinates = coords;
+        }
+
         /// <summary>
         /// Draws the grid on the given batch
         /// </summary>
         /// <param name="batch">SpriteBatch to draw on</param>
-        public void Draw(SpriteBatch batch, (int,int) offset)
+        public void Draw(SpriteBatch batch)
         {
-            for (int i = 0; i < 7; i++)
+            foreach (var pair in returnHexagonPairs())
             {
-                for (int j = 0; j < 7; j++)
-                {
-                    if ((i + j > 2) && (i + j < 10))
-                    {
-                        (float, float) pixel = HexagonOperations.AxialToPixel(i-3, j-3);
-                        gridHexagons[i, j].Draw(batch, (int)(pixel.Item1*50f) + offset.Item1, 
-                            (int)(pixel.Item2*50f) + offset.Item2);
-                    }
-                }
+                int i = pair.Item1;
+                int j = pair.Item2;
+                (float, float) pixel = HexagonOperations.AxialToPixel(i - 3, j - 3);
+                gridHexagons[i, j].Draw(batch, (int)(pixel.Item1 * Constants.HEXAGON_GAP) + coordinates.Item1,
+                    (int)(pixel.Item2 * Constants.HEXAGON_GAP) + coordinates.Item2);
             }
         }
 
-        public void RegisterHexs(UIManager manager, (int, int) offset)
+        public void RegisterHexs(UIManager manager)
         {
-            for (int i = 0; i < 7; i++)
+            foreach (var pair in returnHexagonPairs())
             {
-                for (int j = 0; j < 7; j++)
-                {
-                    if ((i + j > 2) && (i + j < 10))
-                    {
-                        int localI = i;
-                        int localJ = j;
-                        (float, float) pixel = HexagonOperations.AxialToPixel(i - 3, j - 3);
-                        (int, int) pixelInt = ((int)(pixel.Item1*50f) + offset.Item1 + (int)(Constants.HEXAGON_SCALE/2f * Constants.HEXAGON_IMG_SIZE.Item1)
-                            , (int)(pixel.Item2*50f) + offset.Item2 + (int)(Constants.HEXAGON_SCALE/2f * Constants.HEXAGON_IMG_SIZE.Item2));
-                        void clickFunction() {
-                            gridHexagons[localI, localJ] = new EmptyHexagon();
-                        }
-                        manager.registerClick(clickFunction, 
-                            HexagonOperations.HexagonHitBox(Constants.HEXAGON_SIZE/2, pixelInt));
-                    }
+                int i = pair.Item1;
+                int j = pair.Item2;
+                int localI = i;
+                int localJ = j;
+                (float, float) pixel = HexagonOperations.AxialToPixel(i - 3, j - 3);
+                //TODO: Simplify the following code. Currently has to adjust for drawing being top right, but 
+                // hitbox being central
+                (int, int) pixelInt = ((int)(pixel.Item1* Constants.HEXAGON_GAP) + coordinates.Item1 + (int)(Constants.HEXAGON_SCALE/2f * Constants.HEXAGON_IMG_SIZE.Item1)
+                    , (int)(pixel.Item2* Constants.HEXAGON_GAP) + coordinates.Item2 + (int)(Constants.HEXAGON_SCALE/2f * Constants.HEXAGON_IMG_SIZE.Item2));
+                void clickFunction() {
+                    gridHexagons[localI, localJ] = new EmptyHexagon();
                 }
+                manager.registerClick(clickFunction, 
+                    HexagonOperations.HexagonHitBox(Constants.HEXAGON_SIZE/2, pixelInt));  
             }
-
         }
     }
 }
