@@ -12,6 +12,7 @@ namespace Hexaplicate
         private SpriteBatch _spriteBatch;
         private Grid _grid;
         private UIManager _uiManager;
+        private Inventory _inventory;
 
         public Game1()
         {
@@ -27,8 +28,11 @@ namespace Hexaplicate
             // TODO: Add your initialization logic here
             _grid = new Grid();
             _uiManager = new UIManager();
+            _inventory = new Inventory();
             _grid.setCoordinates((340, 330));
             _grid.RegisterHexs(_uiManager);
+            _inventory.setCoordinates((1000,130));
+            _inventory.RegisterHexs(_uiManager);
             base.Initialize();
         }
 
@@ -56,6 +60,7 @@ namespace Hexaplicate
             _spriteBatch.Begin();
             //_spriteBatch.Draw(hexagonTexture, new Rectangle(0, 0, (int)(612 * scale),(int)(530*scale)), Color.White);
             _grid.Draw(_spriteBatch);
+            _inventory.Draw(_spriteBatch);
             _spriteBatch.End();
 
             base.Draw(gameTime);

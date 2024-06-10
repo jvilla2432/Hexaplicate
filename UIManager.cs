@@ -11,23 +11,39 @@ namespace Hexaplicate
     internal class UIManager
     {
 
-        public delegate void onClick();
+        public delegate (HexagonContainer,(int,int)) onClick();
         bool pressed = false;
+        (HexagonContainer, (int, int)) previous;
+        bool prevClicked = false;
         private List<(onClick, Func<int,int,Boolean>)> registeredFunctions = new();
         /// <summary>
         /// Checks the current inputs and calls all necessary callback functions
         /// </summary>
         public void checkState()
         {
+            //Left click(swap)
             MouseState currentState = Mouse.GetState();
             if (currentState.LeftButton == ButtonState.Pressed && !pressed)
             { 
-                pressed = true;
+                pressed = true; 
                 foreach ((onClick, Func<int, int, Boolean>) mouseEvent in registeredFunctions)
                 {
                     if (mouseEvent.Item2(currentState.Position.X, currentState.Position.Y))
                     {
-                        mouseEvent.Item1();
+                        if (prevClicked)
+                        {
+                            //Swap the hexagons
+                            Hexagon hex = previous.Item1.getHexagon(previous.Item2);
+                            (HexagonContainer, (int, int)) current = mouseEvent.Item1();
+                            previous.Item1.setHexagon(previous.Item2, current.Item1.getHexagon(current.Item2));
+                            current.Item1.setHexagon(current.Item2, hex);
+                            prevClicked = false;
+                        }
+                        else
+                        {
+                            prevClicked = true;
+                            previous = mouseEvent.Item1();
+                        }
                     }
                 }
             }
@@ -35,6 +51,8 @@ namespace Hexaplicate
             {
                 pressed = false;
             }
+
+            //Right click(other stuff?)
         }
 
         /// <summary>

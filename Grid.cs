@@ -8,10 +8,20 @@ using Microsoft.Xna.Framework.Graphics;
 //shoutout to https://www.redblobgames.com/grids/hexagons/
 namespace Hexaplicate
 {
-    internal class Grid
+    internal class Grid : HexagonContainer
     {
         private Hexagon[,] gridHexagons = new Hexagon[7,7];
         private (int, int) coordinates = (0, 0);
+
+
+        public Hexagon getHexagon((int, int) coords)
+        {
+            return gridHexagons[coords.Item1, coords.Item2];
+        }
+        public void setHexagon((int, int) coords, Hexagon hex)
+        {
+            gridHexagons[coords.Item1, coords.Item2] = hex;
+        }
 
         public IEnumerable<(int,int)> returnHexagonPairs()
         {
@@ -34,7 +44,7 @@ namespace Hexaplicate
             //Only sums greater than 2 or less than 10 map to valid hexagon spots.
             foreach (var pair in returnHexagonPairs())
             {
-                gridHexagons[pair.Item1,pair.Item2] = new EssenceHexagon();
+                gridHexagons[pair.Item1,pair.Item2] = new EmptyHexagon();
 
             }
         }
@@ -85,8 +95,8 @@ namespace Hexaplicate
                 // hitbox being central
                 (int, int) pixelInt = ((int)(pixel.Item1* Constants.HEXAGON_GAP) + coordinates.Item1 + (int)(Constants.HEXAGON_SCALE/2f * Constants.HEXAGON_IMG_SIZE.Item1)
                     , (int)(pixel.Item2* Constants.HEXAGON_GAP) + coordinates.Item2 + (int)(Constants.HEXAGON_SCALE/2f * Constants.HEXAGON_IMG_SIZE.Item2));
-                void clickFunction() {
-                    gridHexagons[localI, localJ] = new EmptyHexagon();
+                (HexagonContainer, (int,int)) clickFunction() {
+                    return (this, (localI, localJ));
                 }
                 manager.registerClick(clickFunction, 
                     HexagonOperations.HexagonHitBox(Constants.HEXAGON_SIZE/2, pixelInt));  
