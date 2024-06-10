@@ -42,6 +42,8 @@ namespace Hexaplicate
             // TODO: use this.Content to load your game content here
             EssenceHexagon.SetTexture(new Texture2D[] { Content.Load<Texture2D>("alphaHexagon") });
             EmptyHexagon.SetTexture(new Texture2D[] { Content.Load<Texture2D>("centerHexagon") });
+            Grid.SetTexture( Content.Load<Texture2D>("connectionConnected") );
+
         }
 
         protected override void Update(GameTime gameTime)

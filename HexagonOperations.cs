@@ -9,12 +9,23 @@ namespace Hexaplicate
 {
     internal static class HexagonOperations
     {
-        public static readonly (float,float) qBasis = (3f/2f, (float)Math.Sqrt(3)/2);
+        public static readonly (float, float) qBasis = (3f / 2f, (float)Math.Sqrt(3) / 2);
         public static readonly (float, float) rBasis = (0, (float)Math.Sqrt(3));
+        public static readonly HashSet<(int, int)> axialVectors = new HashSet<(int, int)>{(1, 0),(1,-1),(0,-1),(-1,0),(-1,1),(0,1)};
 
         public static (float,float) AxialToPixel(int q, int r)
         {
             return (qBasis.Item1 * q + rBasis.Item1*r, qBasis.Item2 * q + rBasis.Item2*r);
+        }
+
+        public static bool CheckAdjancency((int,int) coord1, (int,int) coord2)
+        {
+            (int, int) vector = (coord1.Item1 - coord2.Item1, coord1.Item2 - coord2.Item2);
+            if (axialVectors.Contains(vector))
+            {
+                return true;
+            }
+            return false;
         }
         /// <summary>
         /// Returns a function to check if a point is inside of a hexagon of size hexSize centered at offset.x,offset.y

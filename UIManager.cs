@@ -51,6 +51,33 @@ namespace Hexaplicate
             {
                 pressed = false;
             }
+            if(currentState.RightButton == ButtonState.Pressed && !pressed)
+            {
+                pressed = true;
+                foreach ((onClick, Func<int, int, Boolean>) mouseEvent in registeredFunctions)
+                {
+                    if (mouseEvent.Item2(currentState.Position.X, currentState.Position.Y))
+                    {
+                        if (prevClicked)
+                        {
+                            //Add connection
+                            Hexagon hex = previous.Item1.getHexagon(previous.Item2);
+                            (HexagonContainer, (int, int)) current = mouseEvent.Item1();
+                            if (HexagonOperations.CheckAdjancency(previous.Item2, current.Item2)){
+                                if(previous.Item1 == current.Item1)
+                                {
+                                    if(previous.Item1 is Grid)
+                                    {
+                                        Grid grid = (Grid)previous.Item1;
+                                        grid.addConnection(previous.Item2, current.Item2);
+                                    }
+                                }
+                            }
+                            prevClicked = false;
+                        }
+                    }
+                }
+            }
 
             //Right click(other stuff?)
         }

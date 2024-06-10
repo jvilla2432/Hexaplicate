@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 //shoutout to https://www.redblobgames.com/grids/hexagons/
@@ -12,7 +13,13 @@ namespace Hexaplicate
     {
         private Hexagon[,] gridHexagons = new Hexagon[7,7];
         private (int, int) coordinates = (0, 0);
+        private Dictionary<(int, int), List<(int, int)>> adjList = new();
+        private static Texture2D connectionTexure;
 
+        public static void SetTexture(Texture2D texture)
+        {
+            connectionTexure = texture;
+        }
 
         public Hexagon getHexagon((int, int) coords)
         {
@@ -21,6 +28,11 @@ namespace Hexaplicate
         public void setHexagon((int, int) coords, Hexagon hex)
         {
             gridHexagons[coords.Item1, coords.Item2] = hex;
+        }
+
+        public void addConnection((int,int) hex1, (int,int) hex2)
+        {
+            adjList[hex1].Add(hex2);
         }
 
         public IEnumerable<(int,int)> returnHexagonPairs()
@@ -45,7 +57,7 @@ namespace Hexaplicate
             foreach (var pair in returnHexagonPairs())
             {
                 gridHexagons[pair.Item1,pair.Item2] = new EmptyHexagon();
-
+                adjList[pair] = new List<(int, int)>();
             }
         }
         /// <summary>
@@ -79,6 +91,11 @@ namespace Hexaplicate
                 (float, float) pixel = HexagonOperations.AxialToPixel(i - 3, j - 3);
                 gridHexagons[i, j].Draw(batch, (int)(pixel.Item1 * Constants.HEXAGON_GAP) + coordinates.Item1,
                     (int)(pixel.Item2 * Constants.HEXAGON_GAP) + coordinates.Item2);
+                foreach (var addConnection in adjList[pair])
+                {
+                    batch.Draw(connectionTexure, new Rectangle((int)(pixel.Item1 * Constants.HEXAGON_GAP) + coordinates.Item1,
+                    (int)(pixel.Item2 * Constants.HEXAGON_GAP) + coordinates.Item2, 50,50), Color.White);
+                }
             }
         }
 
