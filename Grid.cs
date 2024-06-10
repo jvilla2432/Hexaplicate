@@ -88,14 +88,25 @@ namespace Hexaplicate
             {
                 int i = pair.Item1;
                 int j = pair.Item2;
-                (float, float) pixel = HexagonOperations.AxialToPixel(i - 3, j - 3);
-                gridHexagons[i, j].Draw(batch, (int)(pixel.Item1 * Constants.HEXAGON_GAP) + coordinates.Item1,
-                    (int)(pixel.Item2 * Constants.HEXAGON_GAP) + coordinates.Item2);
+                (float, float) pixel = HexagonOperations.AxialToPixel((i - 3) * (Constants.HEXAGON_GAP + 1), 
+                    (j - 3) * (Constants.HEXAGON_GAP + 1));
+                gridHexagons[i, j].Draw(batch, (int)pixel.Item1 + coordinates.Item1, (int)pixel.Item2 + coordinates.Item2);
                 foreach (var addConnection in adjList[pair])
                 {
-                    batch.Draw(connectionTexure, new Rectangle((int)(pixel.Item1 * Constants.HEXAGON_GAP) + coordinates.Item1,
-                    (int)(pixel.Item2 * Constants.HEXAGON_GAP) + coordinates.Item2, 50,50), Color.White);
+                    (int, int) diff = (addConnection.Item1 - i, addConnection.Item2 - j);
+                    (float, float) pixel2 = HexagonOperations.AxialToPixel(addConnection.Item1 - i, addConnection.Item2 - j);
+                    batch.Draw(connectionTexure, new Rectangle((int)pixel.Item1 + coordinates.Item1 + (int)(Constants.HEXAGON_RADIUS*0.5)
+                       + (int)(Constants.HEXAGON_RADIUS / 2) + (int)pixel2.Item1,
+                    (int)pixel.Item2 + coordinates.Item2 
+                        + (int)(Constants.ADJUSTED_HEX_SIZE.Item2 * Constants.HEXAGON_GAP * 0.5) + (int)pixel2.Item2,
+                    (int)(Constants.HEXAGON_RADIUS),
+                    (int)(Constants.ADJUSTED_HEX_SIZE.Item2*Constants.HEXAGON_GAP)), null, Color.White,
+                    HexagonOperations.axialVectors2[diff], 
+                    new Vector2(connectionTexure.Width/2,
+                    connectionTexure.Height / 2),
+                    0, 0);
                 }
+
             }
         }
 
@@ -107,11 +118,12 @@ namespace Hexaplicate
                 int j = pair.Item2;
                 int localI = i;
                 int localJ = j;
-                (float, float) pixel = HexagonOperations.AxialToPixel(i - 3, j - 3);
+                (float, float) pixel = HexagonOperations.AxialToPixel((i - 3) * (Constants.HEXAGON_GAP + 1),
+                    (j - 3) * (Constants.HEXAGON_GAP + 1));
                 //TODO: Simplify the following code. Currently has to adjust for drawing being top right, but 
                 // hitbox being central
-                (int, int) pixelInt = ((int)(pixel.Item1* Constants.HEXAGON_GAP) + coordinates.Item1 + (int)(Constants.HEXAGON_SCALE/2f * Constants.HEXAGON_IMG_SIZE.Item1)
-                    , (int)(pixel.Item2* Constants.HEXAGON_GAP) + coordinates.Item2 + (int)(Constants.HEXAGON_SCALE/2f * Constants.HEXAGON_IMG_SIZE.Item2));
+                (int, int) pixelInt = ((int)pixel.Item1 + coordinates.Item1 + (int)(Constants.ADJUSTED_HEX_SIZE.Item1/2f)
+                    , (int)pixel.Item2 + coordinates.Item2 + (int)(Constants.ADJUSTED_HEX_SIZE.Item2 / 2f));
                 (HexagonContainer, (int,int)) clickFunction() {
                     return (this, (localI, localJ));
                 }

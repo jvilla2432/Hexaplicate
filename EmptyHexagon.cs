@@ -17,13 +17,12 @@ namespace Hexaplicate
         }
         void Hexagon.Draw(SpriteBatch batch, int xOffset, int yOffset)
         {
-            float scale = Constants.HEXAGON_SCALE;
             if (hexagonTexture[0] == null)
             {
                 throw new InvalidOperationException("Image has not been loaded for this hexagon");
             }
-            batch.Draw(hexagonTexture[0], new Rectangle(xOffset, yOffset, 
-                (int)(Constants.HEXAGON_IMG_SIZE.Item1 * scale), (int)(Constants.HEXAGON_IMG_SIZE.Item2 * scale)), Color.White);
+            batch.Draw(hexagonTexture[0], new Rectangle(xOffset, yOffset,
+                Constants.ADJUSTED_HEX_SIZE.Item1, Constants.ADJUSTED_HEX_SIZE.Item2), Color.White);
         }
 
     }

@@ -9,13 +9,24 @@ namespace Hexaplicate
 {
     internal static class HexagonOperations
     {
-        public static readonly (float, float) qBasis = (3f / 2f, (float)Math.Sqrt(3) / 2);
-        public static readonly (float, float) rBasis = (0, (float)Math.Sqrt(3));
-        public static readonly HashSet<(int, int)> axialVectors = new HashSet<(int, int)>{(1, 0),(1,-1),(0,-1),(-1,0),(-1,1),(0,1)};
+        public static readonly (float, float) qBasis = (3f / 2f * Constants.HEXAGON_RADIUS,
+            (float)Math.Sqrt(3) / 2 * Constants.HEXAGON_RADIUS);
+        public static readonly (float, float) rBasis = (0, (float)Math.Sqrt(3) * Constants.HEXAGON_RADIUS);
+        public static readonly HashSet<(int, int)> axialVectors = new HashSet<(int, int)> { (1, 0), (1, -1), (0, -1), (-1, 0), (-1, 1), (0, 1) };
+        public static readonly Dictionary<(int, int), float> axialVectors2 =
+            new Dictionary<(int, int), float> { { (1, 0), (float)(2*Math.PI/3)}, { (1, -1), (float)Math.PI/3 }, { (0, -1), 0 },
+                { (-1, 0), (float)(5*Math.PI/3) }, { (-1, 1), (float)(4*Math.PI/3) }, { (0, 1), (float)Math.PI } };
 
-        public static (float,float) AxialToPixel(int q, int r)
+        /// <summary>
+        /// Takes in axial hexagon coordinates and returns pixel locations
+        /// </summary>
+        /// <param name="q"></param>
+        /// <param name="r"></param>
+        /// <returns></returns>
+        public static (float,float) AxialToPixel(float q, float r)
         {
-            return (qBasis.Item1 * q + rBasis.Item1*r, qBasis.Item2 * q + rBasis.Item2*r);
+            return (qBasis.Item1 * q + rBasis.Item1*r,
+                qBasis.Item2 * q + rBasis.Item2*r);
         }
 
         public static bool CheckAdjancency((int,int) coord1, (int,int) coord2)
