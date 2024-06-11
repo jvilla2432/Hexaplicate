@@ -69,7 +69,10 @@ namespace Hexaplicate
                                     if(previous.Item1 is Grid)
                                     {
                                         Grid grid = (Grid)previous.Item1;
-                                        grid.addConnection(previous.Item2, current.Item2);
+                                        if (!grid.checkConnection(current.Item2, previous.Item2))
+                                        {
+                                            grid.toggleConnection(previous.Item2, current.Item2);
+                                        }
                                     }
                                 }
                             }

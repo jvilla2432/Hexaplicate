@@ -52,8 +52,6 @@ namespace Hexaplicate
                 //Debug.WriteLine("test 4");
                 x = x - offset.Item1;
                 y = y - offset.Item2;
-                Debug.WriteLine(x);
-                Debug.WriteLine(y);
 
                 double[] vertx = { 0.5d * hexSize, 1d * hexSize, 0.5d * hexSize, 
                     -0.5d * hexSize, -1d * hexSize, -0.5 * hexSize};
@@ -68,7 +66,6 @@ namespace Hexaplicate
                      (x < (vertx[j] - vertx[i]) * (y - verty[i]) / (verty[j] - verty[i]) + vertx[i]))
                         c = !c;
                 }
-                Debug.WriteLine(c);
                 return c;
             };
 

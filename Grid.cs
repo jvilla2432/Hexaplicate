@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,10 +31,30 @@ namespace Hexaplicate
             gridHexagons[coords.Item1, coords.Item2] = hex;
         }
 
-        public void addConnection((int,int) hex1, (int,int) hex2)
+        public void toggleConnection((int,int) hex1, (int,int) hex2)
         {
+            foreach (var hex in adjList[hex1])
+            {
+                if (hex2 == hex)
+                {
+                    adjList[hex1].Remove(hex);
+                    return;
+                }
+            }
             adjList[hex1].Add(hex2);
         }
+
+        public bool checkConnection((int, int) hex1, (int, int) hex2)
+        {
+            foreach (var hex in adjList[hex1])
+            {
+                if (hex2 == hex) { 
+                    return true;
+                }
+            }
+            return false;
+        }
+
 
         public IEnumerable<(int,int)> returnHexagonPairs()
         {
