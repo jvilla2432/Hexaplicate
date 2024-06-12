@@ -6,6 +6,17 @@ using System.Threading.Tasks;
 
 namespace Hexaplicate
 {
+    public enum EssenceType
+    {
+        Essence1,
+        Essence2
+    }
+
+    public enum ResourceType
+    {
+        Resource1
+    }
+
     internal static class Constants
     {
         internal static readonly int NUM_RESOURCES = 1;

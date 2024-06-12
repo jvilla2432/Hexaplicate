@@ -8,9 +8,13 @@ namespace Hexaplicate
 {
     internal class Essence1 : Essence
     {
-        void Essence.performEffect(Hexagon hex)
-        {
-            throw new NotImplementedException();
+        void Essence.performEffect(Grid grid, (int, int) hexCoordinate, float deltaT, float strength) { 
+
+            if(grid.getHexagon(hexCoordinate) is EssenceHexagon)
+            {
+                EssenceHexagon hex = (EssenceHexagon)grid.getHexagon(hexCoordinate);
+
+            }
         }
     }
 }

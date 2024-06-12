@@ -16,6 +16,13 @@ namespace Hexaplicate
         (HexagonContainer, (int, int)) previous;
         bool prevClicked = false;
         private List<(onClick, Func<int,int,Boolean>)> registeredFunctions = new();
+        private Grid centerGrid;
+
+
+        public UIManager(Grid center)
+        {
+            centerGrid = center;
+        }
         /// <summary>
         /// Checks the current inputs and calls all necessary callback functions
         /// </summary>
@@ -61,6 +68,7 @@ namespace Hexaplicate
                         if (prevClicked)
                         {
                             //Add connection
+                            List<List<Hexagon>> BFStree = new();
                             Hexagon hex = previous.Item1.getHexagon(previous.Item2);
                             (HexagonContainer, (int, int)) current = mouseEvent.Item1();
                             if (HexagonOperations.CheckAdjancency(previous.Item2, current.Item2)){
@@ -72,6 +80,10 @@ namespace Hexaplicate
                                         if (!grid.checkConnection(current.Item2, previous.Item2))
                                         {
                                             grid.toggleConnection(previous.Item2, current.Item2);
+                                            if(!centerGrid.BFS((3, 3), BFStree))
+                                            {
+                                                grid.toggleConnection(previous.Item2, current.Item2);
+                                            }
                                         }
                                     }
                                 }
@@ -93,5 +105,7 @@ namespace Hexaplicate
         public void registerClick(onClick clickFunction, Func<int,int,Boolean> clickCoordinates){
             registeredFunctions.Add((clickFunction,clickCoordinates)); 
         }
+
+        
     }
 }

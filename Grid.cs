@@ -31,17 +31,18 @@ namespace Hexaplicate
             gridHexagons[coords.Item1, coords.Item2] = hex;
         }
 
-        public void toggleConnection((int,int) hex1, (int,int) hex2)
+        public bool toggleConnection((int,int) hex1, (int,int) hex2)
         {
             foreach (var hex in adjList[hex1])
             {
                 if (hex2 == hex)
                 {
                     adjList[hex1].Remove(hex);
-                    return;
+                    return false;
                 }
             }
             adjList[hex1].Add(hex2);
+            return true;
         }
 
         public bool checkConnection((int, int) hex1, (int, int) hex2)
@@ -151,6 +152,46 @@ namespace Hexaplicate
                 manager.registerClick(clickFunction, 
                     HexagonOperations.HexagonHitBox(Constants.HEXAGON_SIZE/2, pixelInt));  
             }
+        }
+
+        //DFS check
+        //Also create tree for essence
+        //create tree when checking?
+        //Also create tree for actually executing all essence hexagons
+        //Return iterator of hexagons
+        //Only need to check the grid that changes(assuming no portal sheninigans changes this) 
+        //Returns list of lists by depth.... 
+        public bool BFS((int,int) startingHex, List<List<Hexagon>> list)
+        {
+            Queue<(int, int)> hexQueue = new();
+            HashSet<(int, int)> explored = new();
+            hexQueue.Enqueue(startingHex);
+            while(hexQueue.Count > 0)
+            {
+                (int,int) hex = hexQueue.Dequeue();
+                explored.Add(hex);
+                foreach ((int, int) neighbor in adjList[hex])
+                {
+                    //if neighbor is itself a grid, call it on that grid...
+                    if (gridHexagons[neighbor.Item1,neighbor.Item2] is FractalHexagon)
+                    {
+                        (int,int) diff = (neighbor.Item1 - hex.Item1, neighbor.Item2 - hex.Item2);
+                        if(!BFS(HexagonOperations.FractalHex(diff), list))
+                        {
+                            return false;
+                        }
+                    }
+                    if (explored.Contains(neighbor))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        hexQueue.Enqueue(neighbor);
+                    }
+                }
+            }
+            return true;
         }
     }
 }

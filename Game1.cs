@@ -27,7 +27,7 @@ namespace Hexaplicate
         {
             // TODO: Add your initialization logic here
             _grid = new Grid();
-            _uiManager = new UIManager();
+            _uiManager = new UIManager(_grid);
             _inventory = new Inventory();
             _grid.setCoordinates((340, 330));
             _grid.RegisterHexs(_uiManager);

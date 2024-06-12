@@ -16,6 +16,14 @@ namespace Hexaplicate
 		private static Texture2D[] hexagonTexture;
 
 
+		public EssenceHexagon()
+        {
+			for (int i = 0; i < Constants.NUM_RESOURCES; i++)
+			{
+				resources[i] = 0;
+			}
+		}
+
 		/// <summary>
 		/// Attempts to add essenceAmount of essence to this hexagon. Returns true if sucessfully added and mutates Hexagon,
 		/// returns false is fails.
@@ -31,6 +39,11 @@ namespace Hexaplicate
 			essences[(int)essence] += essenceAmount;
 			return true;
 		}
+
+		public void AddResource(ResourceType resource, int resourceAmount)
+        {
+			resources[(int)resource] += resourceAmount;
+        }
 
 		public static void SetTexture(Texture2D[] texture)
         {

@@ -70,5 +70,10 @@ namespace Hexaplicate
             };
 
         }
+
+        internal static (int, int) FractalHex((int, int) diff)
+        {
+            return (3 + (diff.Item1 * -3), 3 + (diff.Item2 * -3));
+        }
     }
 }
