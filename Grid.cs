@@ -161,14 +161,24 @@ namespace Hexaplicate
         //Return iterator of hexagons
         //Only need to check the grid that changes(assuming no portal sheninigans changes this) 
         //Returns list of lists by depth.... 
-        public bool BFS((int,int) startingHex, List<List<Hexagon>> list)
+        public bool BFS((int,int) startingHex, List<List<Hexagon>> list, int depth = 0)
         {
             Queue<(int, int)> hexQueue = new();
             HashSet<(int, int)> explored = new();
             hexQueue.Enqueue(startingHex);
+            
             while(hexQueue.Count > 0)
             {
+                Queue<(int, int)> nextQueue = new();
                 (int,int) hex = hexQueue.Dequeue();
+                if (list.Count == depth+1)
+                {
+                    list[0].Append(gridHexagons[hex.Item1,hex.Item2]);
+                }
+                else
+                {
+                    list.Append(new List<Hexagon> { gridHexagons[hex.Item1, hex.Item2] });
+                }
                 explored.Add(hex);
                 foreach ((int, int) neighbor in adjList[hex])
                 {
@@ -187,7 +197,15 @@ namespace Hexaplicate
                     }
                     else
                     {
-                        hexQueue.Enqueue(neighbor);
+                        nextQueue.Enqueue(neighbor);
+                    }
+                }
+                if(hexQueue.Count == 0)
+                {
+                    if(nextQueue.Count != 0)
+                    {
+                        hexQueue = nextQueue;
+                        depth++;
                     }
                 }
             }
