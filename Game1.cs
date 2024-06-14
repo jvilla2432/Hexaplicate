@@ -11,7 +11,7 @@ namespace Hexaplicate
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Grid _grid;
-        private UIManager _uiManager;
+        private Hexaplicate.UI.UIManager _uiManager;
         private Inventory _inventory;
 
         public Game1()
@@ -27,7 +27,7 @@ namespace Hexaplicate
         {
             // TODO: Add your initialization logic here
             _grid = new Grid();
-            _uiManager = new UIManager(_grid);
+            _uiManager = new Hexaplicate.UI.UIManager(_grid);
             _inventory = new Inventory();
             _grid.setCoordinates((340, 330));
             _grid.RegisterHexs(_uiManager);

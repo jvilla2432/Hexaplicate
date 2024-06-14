@@ -13,5 +13,10 @@ namespace Hexaplicate
         {
             throw new NotImplementedException();
         }
+        public Grid getGrid()
+        {
+            throw new NotImplementedException();
+
+        }
     }
 }

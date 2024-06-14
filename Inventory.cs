@@ -61,7 +61,7 @@ namespace Hexaplicate
             }
         }
 
-        public void RegisterHexs(UIManager manager)
+        public void RegisterHexs(Hexaplicate.UI.UIManager manager)
         {
             foreach (var pair in returnHexagonPairs())
             {

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
 
-namespace Hexaplicate
+namespace Hexaplicate.UI
 {
     internal class UIManager
     {
@@ -68,7 +68,6 @@ namespace Hexaplicate
                         if (prevClicked)
                         {
                             //Add connection
-                            List<List<Hexagon>> BFStree = new();
                             Hexagon hex = previous.Item1.getHexagon(previous.Item2);
                             (HexagonContainer, (int, int)) current = mouseEvent.Item1();
                             if (HexagonOperations.CheckAdjancency(previous.Item2, current.Item2)){
@@ -80,7 +79,8 @@ namespace Hexaplicate
                                         if (!grid.checkConnection(current.Item2, previous.Item2))
                                         {
                                             grid.toggleConnection(previous.Item2, current.Item2);
-                                            if(!centerGrid.BFS((3, 3), BFStree))
+                                            if(Grid.checkCycle( (grid,current.Item2.Item1, current.Item2.Item2),
+                                                (grid, previous.Item2.Item1, previous.Item2.Item2) ))
                                             {
                                                 grid.toggleConnection(previous.Item2, current.Item2);
                                             }

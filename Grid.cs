@@ -132,7 +132,7 @@ namespace Hexaplicate
             }
         }
 
-        public void RegisterHexs(UIManager manager)
+        public void RegisterHexs(Hexaplicate.UI.UIManager manager)
         {
             foreach (var pair in returnHexagonPairs())
             {
@@ -210,6 +210,46 @@ namespace Hexaplicate
                 }
             }
             return true;
+        }
+
+        
+        public IEnumerable<(Grid,int,int)> getNeighbors((int,int) hex)
+        {
+            foreach ((int, int) neighbor in adjList[(hex.Item1, hex.Item2)])
+            {
+                if (gridHexagons[neighbor.Item1, neighbor.Item2] is FractalHexagon)
+                {
+                    FractalHexagon fractalHex = (FractalHexagon)gridHexagons[neighbor.Item1, neighbor.Item2];
+                    (int, int) wrapped = HexagonOperations.FractalHex((neighbor.Item1 - hex.Item1, neighbor.Item2 - hex.Item2));
+                    yield return (fractalHex.getGrid(), wrapped.Item1, wrapped.Item2);
+                }
+                yield return (this,neighbor.Item1,neighbor.Item2);
+            }
+
+        }
+        //additional edge
+        public static bool checkCycle( (Grid, int,int) startingHex, (Grid, int, int) targetHex) 
+        {
+            Stack<(Grid, int, int)> hexStack = new();
+            HashSet<(Grid, int, int)> explored = new();
+            hexStack.Push(startingHex);
+            while (hexStack.Count > 0)
+            {
+                (Grid, int, int) hex = hexStack.Pop(); 
+                explored.Add(hex);
+                foreach ((Grid, int, int) neighbor in hex.Item1.getNeighbors( (hex.Item2,hex.Item3) ))
+                {
+                    if(neighbor == targetHex)
+                    {
+                        return true;
+                    }
+                    if (!explored.Contains(neighbor))
+                    {
+                        hexStack.Push(neighbor); 
+                    }
+                }
+            }
+            return false;
         }
     }
 }
