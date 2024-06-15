@@ -79,8 +79,8 @@ namespace Hexaplicate.UI
                                         if (!grid.checkConnection(current.Item2, previous.Item2))
                                         {
                                             grid.toggleConnection(previous.Item2, current.Item2);
-                                            if(Grid.checkCycle( (grid,current.Item2.Item1, current.Item2.Item2),
-                                                (grid, previous.Item2.Item1, previous.Item2.Item2) ))
+                                            if(Grid.checkCycle( (grid,current.Item2),
+                                                (grid, previous.Item2) ))
                                             {
                                                 grid.toggleConnection(previous.Item2, current.Item2);
                                             }

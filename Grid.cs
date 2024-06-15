@@ -16,6 +16,7 @@ namespace Hexaplicate
         private (int, int) coordinates = (0, 0);
         private Dictionary<(int, int), List<(int, int)>> adjList = new();
         private static Texture2D connectionTexure;
+        private static Grid centerGrid;
 
         public static void SetTexture(Texture2D texture)
         {
@@ -73,8 +74,12 @@ namespace Hexaplicate
         /// <summary>
         /// Initalize Grid with all empty hexagons.
         /// </summary>
-        public Grid()
+        public Grid(bool central = false)
         {
+            if (central) 
+            {
+                centerGrid = this;
+            }
             //Only sums greater than 2 or less than 10 map to valid hexagon spots.
             foreach (var pair in returnHexagonPairs())
             {
@@ -161,43 +166,31 @@ namespace Hexaplicate
         //Return iterator of hexagons
         //Only need to check the grid that changes(assuming no portal sheninigans changes this) 
         //Returns list of lists by depth.... 
-        public bool BFS((int,int) startingHex, List<List<Hexagon>> list, int depth = 0)
+        public static void BFS(List<List<Hexagon>> list)
         {
-            Queue<(int, int)> hexQueue = new();
-            HashSet<(int, int)> explored = new();
-            hexQueue.Enqueue(startingHex);
-            
+            Queue<(Grid,(int, int))> hexQueue = new();
+            HashSet<(Grid,(int, int))> explored = new();
+            hexQueue.Enqueue( (centerGrid,(3,3)));
+            int depth = 0;
             while(hexQueue.Count > 0)
             {
-                Queue<(int, int)> nextQueue = new();
-                (int,int) hex = hexQueue.Dequeue();
+                Queue<(Grid,(int, int))> nextQueue = new();
+                (Grid, (int, int)) hex = hexQueue.Dequeue();
                 if (list.Count == depth+1)
                 {
-                    list[0].Append(gridHexagons[hex.Item1,hex.Item2]);
+                    list[0].Append(hex.Item1.getHexagon(hex.Item2));
                 }
                 else
                 {
-                    list.Append(new List<Hexagon> { gridHexagons[hex.Item1, hex.Item2] });
+                    list.Append(new List<Hexagon> { hex.Item1.getHexagon(hex.Item2) });
                 }
                 explored.Add(hex);
-                foreach ((int, int) neighbor in adjList[hex])
+                foreach ((Grid, (int, int)) neighbor in hex.Item1.getNeighbors(hex.Item2))
                 {
-                    //if neighbor is itself a grid, call it on that grid...
-                    if (gridHexagons[neighbor.Item1,neighbor.Item2] is FractalHexagon)
-                    {
-                        (int,int) diff = (neighbor.Item1 - hex.Item1, neighbor.Item2 - hex.Item2);
-                        if(!BFS(HexagonOperations.FractalHex(diff), list))
-                        {
-                            return false;
-                        }
-                    }
-                    if (explored.Contains(neighbor))
-                    {
-                        return false;
-                    }
-                    else
+                    if (!explored.Contains(neighbor))
                     {
                         nextQueue.Enqueue(neighbor);
+
                     }
                 }
                 if(hexQueue.Count == 0)
@@ -209,35 +202,34 @@ namespace Hexaplicate
                     }
                 }
             }
-            return true;
         }
 
         
-        public IEnumerable<(Grid,int,int)> getNeighbors((int,int) hex)
+        public IEnumerable<(Grid, (int,int))> getNeighbors((int,int) hex)
         {
-            foreach ((int, int) neighbor in adjList[(hex.Item1, hex.Item2)])
+            foreach ((int, int) neighbor in adjList[hex])
             {
-                if (gridHexagons[neighbor.Item1, neighbor.Item2] is FractalHexagon)
+                if (getHexagon(neighbor) is FractalHexagon)
                 {
-                    FractalHexagon fractalHex = (FractalHexagon)gridHexagons[neighbor.Item1, neighbor.Item2];
+                    FractalHexagon fractalHex = (FractalHexagon)getHexagon(neighbor);
                     (int, int) wrapped = HexagonOperations.FractalHex((neighbor.Item1 - hex.Item1, neighbor.Item2 - hex.Item2));
-                    yield return (fractalHex.getGrid(), wrapped.Item1, wrapped.Item2);
+                    yield return (fractalHex.getGrid(), wrapped);
                 }
-                yield return (this,neighbor.Item1,neighbor.Item2);
+                yield return (this,neighbor);
             }
 
         }
         //additional edge
-        public static bool checkCycle( (Grid, int,int) startingHex, (Grid, int, int) targetHex) 
+        public static bool checkCycle( (Grid, (int,int)) startingHex, (Grid, (int, int)) targetHex) 
         {
-            Stack<(Grid, int, int)> hexStack = new();
-            HashSet<(Grid, int, int)> explored = new();
+            Stack<(Grid, (int, int))> hexStack = new();
+            HashSet<(Grid, (int, int))> explored = new();
             hexStack.Push(startingHex);
             while (hexStack.Count > 0)
             {
-                (Grid, int, int) hex = hexStack.Pop(); 
+                (Grid, (int, int)) hex = hexStack.Pop(); 
                 explored.Add(hex);
-                foreach ((Grid, int, int) neighbor in hex.Item1.getNeighbors( (hex.Item2,hex.Item3) ))
+                foreach ((Grid, (int, int)) neighbor in hex.Item1.getNeighbors(hex.Item2))
                 {
                     if(neighbor == targetHex)
                     {

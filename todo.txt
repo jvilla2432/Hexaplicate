@@ -1,6 +1,2 @@
-﻿
-
-TODO::
+﻿TODO::
 Change UI to a state machine
-Change BFS to be static. Basically the way DFS is now
-Standardize hexagon coordinates only being pairs
