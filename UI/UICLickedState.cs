@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hexaplicate
+namespace Hexaplicate.UI
 {
-    internal class Tree
+    internal class UICLickedState
     {
     }
 }
