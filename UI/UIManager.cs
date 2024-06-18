@@ -17,6 +17,7 @@ namespace Hexaplicate.UI
         bool prevClicked = false;
         private List<(onClick, Func<int,int,Boolean>)> registeredFunctions = new();
         private Grid centerGrid;
+        public UIManagerState UIHexState;
 
 
         public UIManager(Grid center)
@@ -24,7 +25,7 @@ namespace Hexaplicate.UI
             centerGrid = center;
         }
         /// <summary>
-        /// Checks the current inputs and calls all necessary callback functions
+        /// Checks the current inputs and calls all necessary callback functions for hexagons
         /// </summary>
         public void checkState()
         {

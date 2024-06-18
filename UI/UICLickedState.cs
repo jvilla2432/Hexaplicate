@@ -9,9 +9,38 @@ namespace Hexaplicate.UI
 {
     internal class UIClickedState : UIManagerState
     {
-        void UIManagerState.handle_input(MouseState state)
+        private (HexagonContainer, (int, int)) prevClicked;
+
+        public UIClickedState setClicked((HexagonContainer, (int, int)) prevC)
         {
-            throw new NotImplementedException();
+            prevClicked = prevC;
+            return this;
+        }
+        void UIManagerState.handle_input(UIManager manager, (HexagonContainer, (int, int)) current, MouseState state)
+        {
+            Hexagon prevHex = prevClicked.Item1.getHexagon(prevClicked.Item2);
+            Hexagon currentHex = current.Item1.getHexagon(current.Item2);
+            if (state.LeftButton == ButtonState.Pressed)
+            {
+                prevClicked.Item1.setHexagon(prevClicked.Item2, currentHex);
+                current.Item1.setHexagon(current.Item2, prevHex);
+            }
+            else if (state.RightButton == ButtonState.Pressed)
+            {
+                if (prevClicked.Item1 is Grid && prevHex == currentHex && HexagonOperations.CheckAdjancency(prevClicked.Item2, current.Item2))
+                {
+                    Grid grid = (Grid)prevClicked.Item1;
+                    if (!grid.checkConnection(current.Item2, prevClicked.Item2))
+                    {
+                        grid.toggleConnection(prevClicked.Item2, current.Item2);
+                        if (Grid.checkCycle((grid, current.Item2),
+                            (grid, prevClicked.Item2)))
+                        {
+                            grid.toggleConnection(prevClicked.Item2, current.Item2);
+                        }
+                    }
+                }
+            }
         }
     }
 }
