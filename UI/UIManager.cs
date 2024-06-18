@@ -17,7 +17,7 @@ namespace Hexaplicate.UI
         bool prevClicked = false;
         private List<(onClick, Func<int,int,Boolean>)> registeredFunctions = new();
         private Grid centerGrid;
-        public UIManagerState UIHexState;
+        public UIManagerState UIHexState = UIManagerState.waitingState;
 
 
         public UIManager(Grid center)
@@ -29,73 +29,31 @@ namespace Hexaplicate.UI
         /// </summary>
         public void checkState()
         {
-            //Left click(swap)
             MouseState currentState = Mouse.GetState();
-            if (currentState.LeftButton == ButtonState.Pressed && !pressed)
+            if ( (currentState.LeftButton == ButtonState.Pressed ||
+                currentState.RightButton == ButtonState.Pressed) && !pressed)
             { 
-                pressed = true; 
+                pressed = true;
+                bool clicked = false;
                 foreach ((onClick, Func<int, int, Boolean>) mouseEvent in registeredFunctions)
                 {
                     if (mouseEvent.Item2(currentState.Position.X, currentState.Position.Y))
                     {
-                        if (prevClicked)
-                        {
-                            //Swap the hexagons
-                            Hexagon hex = previous.Item1.getHexagon(previous.Item2);
-                            (HexagonContainer, (int, int)) current = mouseEvent.Item1();
-                            previous.Item1.setHexagon(previous.Item2, current.Item1.getHexagon(current.Item2));
-                            current.Item1.setHexagon(current.Item2, hex);
-                            prevClicked = false;
-                        }
-                        else
-                        {
-                            prevClicked = true;
-                            previous = mouseEvent.Item1();
-                        }
+                        Debug.WriteLine("wat");
+                        UIHexState.handle_input(this, mouseEvent.Item1(), currentState);
+                        clicked = true;
                     }
                 }
+                if (!clicked)
+                {
+                    UIHexState = UIManagerState.waitingState;
+                }
             }
-            if(currentState.LeftButton == ButtonState.Released)
+            if(currentState.LeftButton == ButtonState.Released ||
+                currentState.RightButton == ButtonState.Released)
             {
                 pressed = false;
             }
-            if(currentState.RightButton == ButtonState.Pressed && !pressed)
-            {
-                pressed = true;
-                foreach ((onClick, Func<int, int, Boolean>) mouseEvent in registeredFunctions)
-                {
-                    if (mouseEvent.Item2(currentState.Position.X, currentState.Position.Y))
-                    {
-                        if (prevClicked)
-                        {
-                            //Add connection
-                            Hexagon hex = previous.Item1.getHexagon(previous.Item2);
-                            (HexagonContainer, (int, int)) current = mouseEvent.Item1();
-                            if (HexagonOperations.CheckAdjancency(previous.Item2, current.Item2)){
-                                if(previous.Item1 == current.Item1)
-                                {
-                                    if(previous.Item1 is Grid)
-                                    {
-                                        Grid grid = (Grid)previous.Item1;
-                                        if (!grid.checkConnection(current.Item2, previous.Item2))
-                                        {
-                                            grid.toggleConnection(previous.Item2, current.Item2);
-                                            if(Grid.checkCycle( (grid,current.Item2),
-                                                (grid, previous.Item2) ))
-                                            {
-                                                grid.toggleConnection(previous.Item2, current.Item2);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            prevClicked = false;
-                        }
-                    }
-                }
-            }
-
-            //Right click(other stuff?)
         }
 
         /// <summary>

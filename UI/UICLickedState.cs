@@ -41,6 +41,7 @@ namespace Hexaplicate.UI
                     }
                 }
             }
+            manager.UIHexState = UIManagerState.waitingState;
         }
     }
 }
