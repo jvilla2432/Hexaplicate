@@ -27,7 +27,8 @@ namespace Hexaplicate.UI
             }
             else if (state.RightButton == ButtonState.Pressed)
             {
-                if (prevClicked.Item1 is Grid && prevHex == currentHex && HexagonOperations.CheckAdjancency(prevClicked.Item2, current.Item2))
+                if (prevClicked.Item1 is Grid && current.Item1 == prevClicked.Item1
+                    && HexagonOperations.CheckAdjancency(prevClicked.Item2, current.Item2))
                 {
                     Grid grid = (Grid)prevClicked.Item1;
                     if (!grid.checkConnection(current.Item2, prevClicked.Item2))

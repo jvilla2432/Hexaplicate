@@ -39,7 +39,6 @@ namespace Hexaplicate.UI
                 {
                     if (mouseEvent.Item2(currentState.Position.X, currentState.Position.Y))
                     {
-                        Debug.WriteLine("wat");
                         UIHexState.handle_input(this, mouseEvent.Item1(), currentState);
                         clicked = true;
                     }
@@ -49,7 +48,7 @@ namespace Hexaplicate.UI
                     UIHexState = UIManagerState.waitingState;
                 }
             }
-            if(currentState.LeftButton == ButtonState.Released ||
+            if(currentState.LeftButton == ButtonState.Released &&
                 currentState.RightButton == ButtonState.Released)
             {
                 pressed = false;
