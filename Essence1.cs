@@ -13,7 +13,6 @@ namespace Hexaplicate
             if(grid.getHexagon(hexCoordinate) is EssenceHexagon)
             {
                 EssenceHexagon hex = (EssenceHexagon)grid.getHexagon(hexCoordinate);
-
             }
         }
     }

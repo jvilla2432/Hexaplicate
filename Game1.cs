@@ -11,7 +11,7 @@ namespace Hexaplicate
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Grid _grid;
-        private Hexaplicate.UI.UIManager _uiManager;
+        private UI.UIManager _uiManager;
         private Inventory _inventory;
 
         public Game1()
@@ -27,7 +27,7 @@ namespace Hexaplicate
         {
             // TODO: Add your initialization logic here
             _grid = new Grid();
-            _uiManager = new Hexaplicate.UI.UIManager(_grid);
+            _uiManager = new UI.UIManager(_grid);
             _inventory = new Inventory();
             _grid.setCoordinates((340, 330));
             _grid.RegisterHexs(_uiManager);
@@ -43,7 +43,7 @@ namespace Hexaplicate
             EssenceHexagon.SetTexture(new Texture2D[] { Content.Load<Texture2D>("alphaHexagon") });
             EmptyHexagon.SetTexture(new Texture2D[] { Content.Load<Texture2D>("centerHexagon") });
             Grid.SetTexture( Content.Load<Texture2D>("connectionConnected") );
-
+            UI.UIInfoDisplay.SetTexture(new Texture2D[] { Content.Load<Texture2D>("UIColor") });
         }
 
         protected override void Update(GameTime gameTime)
@@ -63,6 +63,7 @@ namespace Hexaplicate
             //_spriteBatch.Draw(hexagonTexture, new Rectangle(0, 0, (int)(612 * scale),(int)(530*scale)), Color.White);
             _grid.Draw(_spriteBatch);
             _inventory.Draw(_spriteBatch);
+            _uiManager.Draw(_spriteBatch);
             _spriteBatch.End();
 
             base.Draw(gameTime);

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Hexaplicate.UI
 {
@@ -23,6 +24,11 @@ namespace Hexaplicate.UI
         public UIManager(Grid center)
         {
             centerGrid = center;
+        }
+        
+        public void Draw(SpriteBatch batch)
+        {
+            UIHexState.Draw(batch);
         }
         /// <summary>
         /// Checks the current inputs and calls all necessary callback functions for hexagons

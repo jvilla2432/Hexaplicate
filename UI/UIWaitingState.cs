@@ -15,6 +15,10 @@ namespace Hexaplicate.UI
             {
                 manager.UIHexState = UIManagerState.clickedState.setClicked(container);
             }
+            if(state.RightButton == ButtonState.Pressed)
+            {
+                manager.UIHexState = UIManagerState.displayingState;
+            }
         }
     }
 }

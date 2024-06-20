@@ -14,7 +14,12 @@ namespace Hexaplicate
 		private int[] essences = new int[Constants.NUM_ESSENCES];
 		private Tuple<Hexagon, Boolean>[] neighbors = new Tuple<Hexagon, Boolean>[6];
 		private static Texture2D[] hexagonTexture;
+		  
 
+		public int getEssence(EssenceType essenceNumber)
+        {
+			return essences[(int)essenceNumber];
+        }
 
 		public EssenceHexagon()
         {
