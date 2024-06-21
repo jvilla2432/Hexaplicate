@@ -16,6 +16,8 @@ namespace Hexaplicate.UI
 
         public UIDisplayingState setDisplay((HexagonContainer, (int, int)) display)
         {
+            statsList = new();
+            currentScreen = 0;
             displayingHexagon = display;
             Hexagon hex = display.Item1.getHexagon(display.Item2);
             if (hex is EssenceHexagon)
@@ -49,12 +51,12 @@ namespace Hexaplicate.UI
         void UIManagerState.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch batch)
         {
             int numStats = Math.Min(statsList.Count, (currentScreen * 5) + 5) - currentScreen * 5;
-            (string, string)[] stats = new (string, string)[5];
+            (string, string)[] stats = new (string, string)[numStats];
             for (int i = 0; i < numStats; i++)
             {
-                stats[numStats] = statsList[i + currentScreen*5];
+                stats[i] = statsList[i + currentScreen*5];
             }
-            UIInfoDisplay.CreateBox(batch, displayingHexagon, new (string, string)[] {});
+            UIInfoDisplay.CreateBox(batch, displayingHexagon, stats);
         }
     }
 }

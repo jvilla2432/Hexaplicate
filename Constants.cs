@@ -8,8 +8,7 @@ namespace Hexaplicate
 {
     public enum EssenceType
     {
-        Essence1,
-        Essence2
+        Essence1
     }
 
     public enum ResourceType

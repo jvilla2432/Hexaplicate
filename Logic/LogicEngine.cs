@@ -17,11 +17,16 @@ namespace Hexaplicate.Logic
             {
                 foreach((Grid,(int,int)) hex in depth)
                 {
-                    EssenceHexagon essHex = (EssenceHexagon)hex.Item1.getHexagon(hex.Item2);
-                    for(EssenceType essType = 0; (int)essType < Constants.NUM_ESSENCES; essType++)
+                    Hexagon baseHex = hex.Item1.getHexagon(hex.Item2);
+                    if(baseHex is EssenceHexagon)
                     {
-                        Essence ess = Essence.essences[(int)essType];
-                        ess.performEffect(hex.Item1, hex.Item2, deltaT, essHex.getEssence(essType));
+                        EssenceHexagon essHex = (EssenceHexagon)baseHex;
+                        for (EssenceType essType = 0; (int)essType < Constants.NUM_ESSENCES; essType++)
+                        {
+                            Essence ess = Essence.essences[(int)essType];
+                            ess.performEffect(hex.Item1, hex.Item2, deltaT, essHex.getEssence(essType));
+                        }
+
                     }
                 }
             }

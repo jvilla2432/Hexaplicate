@@ -40,7 +40,9 @@ namespace Hexaplicate
             {
                 int i = pair.Item1;
                 int j = pair.Item2;
-                inventoryHexagons[i, j] = new EssenceHexagon();
+                EssenceHexagon essHex = new EssenceHexagon();
+                essHex.AddEssence(EssenceType.Essence1, 1);
+                inventoryHexagons[i, j] = essHex;
             }
         }
 

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,9 +48,8 @@ namespace Hexaplicate
 		internal Boolean AddEssence(EssenceType essence, int essenceAmount)
 		{
 			int totalEssenceValue = essences.Aggregate((total, current) => total + current);
-			if (Constants.MAX_ESSENCE > essenceAmount + totalEssenceValue)
+			if (Constants.MAX_ESSENCE < essenceAmount + totalEssenceValue)
 			{
-
 				return false;
 			}
 			essences[(int)essence] += essenceAmount;

@@ -178,11 +178,11 @@ namespace Hexaplicate
                 (Grid, (int, int)) hex = hexQueue.Dequeue();
                 if (list.Count == depth+1)
                 {
-                    list[0].Append(hex);
+                    list[0].Add(hex);
                 }
                 else
                 {
-                    list.Append(new List<(Grid, (int, int))> {hex});
+                    list.Add(new List<(Grid, (int, int))> {hex});
                 }
                 explored.Add(hex);
                 foreach ((Grid, (int, int)) neighbor in hex.Item1.getNeighbors(hex.Item2))

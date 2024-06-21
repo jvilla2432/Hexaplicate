@@ -38,7 +38,7 @@ namespace Hexaplicate.UI
             {
                 (string, string) stat = stats[i];
                 _spriteBatch.DrawString(font, stat.Item1 + " :" + stat.Item2,
-                    new Vector2(offset.Item1, offset.Item2 + 300 + i*50), Color.White);
+                    new Vector2(offset.Item1, offset.Item2 + 100 + i*50), Color.White);
             }
         }
     }

@@ -13,6 +13,7 @@ namespace Hexaplicate
         private Grid _grid;
         private UI.UIManager _uiManager;
         private Inventory _inventory;
+        private Logic.LogicEngine _logicEngine;
 
         public Game1()
         {
@@ -26,9 +27,10 @@ namespace Hexaplicate
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            _grid = new Grid();
+            _grid = new Grid(true);
             _uiManager = new UI.UIManager();
             _inventory = new Inventory();
+            _logicEngine = new Logic.LogicEngine();
             _grid.setCoordinates((  (int)(Constants.SCREEN_SIZE.Item1 * Constants.GRID_OFFSET.Item1),
                 (int)(Constants.SCREEN_SIZE.Item2 * Constants.GRID_OFFSET.Item2)));
             _grid.RegisterHexs(_uiManager);
@@ -56,6 +58,7 @@ namespace Hexaplicate
                 Exit();
             // TODO: Add your update logic here
             _uiManager.checkState();
+            _logicEngine.RunEssence(gameTime.ElapsedGameTime.Milliseconds);
             base.Update(gameTime);
         }
 
