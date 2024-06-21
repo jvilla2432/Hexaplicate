@@ -21,12 +21,23 @@ namespace Hexaplicate
 			return essences[(int)essenceNumber];
         }
 
+		public int getResource(ResourceType resourceNumber)
+		{
+			return resources[(int)resourceNumber];
+		}
+
+
 		public EssenceHexagon()
         {
 			for (int i = 0; i < Constants.NUM_RESOURCES; i++)
 			{
 				resources[i] = 0;
 			}
+			for (int i = 0; i < Constants.NUM_ESSENCES; i++)
+			{
+				essences[i] = 0;
+			}
+
 		}
 
 		/// <summary>

@@ -17,8 +17,8 @@ namespace Hexaplicate
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferWidth = 1280;
-            _graphics.PreferredBackBufferHeight = 720;
+            _graphics.PreferredBackBufferWidth = Constants.SCREEN_SIZE.Item1;
+            _graphics.PreferredBackBufferHeight = Constants.SCREEN_SIZE.Item2;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -27,11 +27,13 @@ namespace Hexaplicate
         {
             // TODO: Add your initialization logic here
             _grid = new Grid();
-            _uiManager = new UI.UIManager(_grid);
+            _uiManager = new UI.UIManager();
             _inventory = new Inventory();
-            _grid.setCoordinates((340, 330));
+            _grid.setCoordinates((  (int)(Constants.SCREEN_SIZE.Item1 * Constants.GRID_OFFSET.Item1),
+                (int)(Constants.SCREEN_SIZE.Item2 * Constants.GRID_OFFSET.Item2)));
             _grid.RegisterHexs(_uiManager);
-            _inventory.setCoordinates((1000,130));
+            _inventory.setCoordinates(((int)(Constants.SCREEN_SIZE.Item1 * Constants.INVENTORY_GRID_OFFSET.Item1),
+                (int)(Constants.SCREEN_SIZE.Item2 * Constants.INVENTORY_GRID_OFFSET.Item2)));
             _inventory.RegisterHexs(_uiManager);
             base.Initialize();
         }
@@ -44,6 +46,8 @@ namespace Hexaplicate
             EmptyHexagon.SetTexture(new Texture2D[] { Content.Load<Texture2D>("centerHexagon") });
             Grid.SetTexture( Content.Load<Texture2D>("connectionConnected") );
             UI.UIInfoDisplay.SetTexture(new Texture2D[] { Content.Load<Texture2D>("UIColor") });
+            UI.UIInfoDisplay.font = Content.Load<SpriteFont>("file");
+
         }
 
         protected override void Update(GameTime gameTime)

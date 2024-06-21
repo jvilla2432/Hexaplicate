@@ -16,7 +16,7 @@ namespace Hexaplicate.UI
             prevClicked = prevC;
             return this;
         }
-        void UIManagerState.handle_input(UIManager manager, (HexagonContainer, (int, int)) current, MouseState state)
+        void UIManagerState.handle_input(UIManager manager, (HexagonContainer, (int, int)) current, MouseState state, KeyboardState keyboardState)
         {
             Hexagon prevHex = prevClicked.Item1.getHexagon(prevClicked.Item2);
             Hexagon currentHex = current.Item1.getHexagon(current.Item2);

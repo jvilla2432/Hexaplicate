@@ -14,38 +14,36 @@ namespace Hexaplicate.UI
 
         public delegate (HexagonContainer,(int,int)) onClick();
         bool pressed = false;
-        (HexagonContainer, (int, int)) previous;
-        bool prevClicked = false;
-        private List<(onClick, Func<int,int,Boolean>)> registeredFunctions = new();
-        private Grid centerGrid;
+        private List<(onClick, Func<int,int,bool>)> registeredFunctions = new();
         public UIManagerState UIHexState = UIManagerState.waitingState;
 
-
-        public UIManager(Grid center)
-        {
-            centerGrid = center;
-        }
         
         public void Draw(SpriteBatch batch)
         {
             UIHexState.Draw(batch);
+        }
+
+        public static void checkHexes()
+        {
+
         }
         /// <summary>
         /// Checks the current inputs and calls all necessary callback functions for hexagons
         /// </summary>
         public void checkState()
         {
-            MouseState currentState = Mouse.GetState();
-            if ( (currentState.LeftButton == ButtonState.Pressed ||
-                currentState.RightButton == ButtonState.Pressed) && !pressed)
+            MouseState currentMouse = Mouse.GetState();
+            KeyboardState currentKeyboard = Keyboard.GetState();
+            if ( (currentMouse.LeftButton == ButtonState.Pressed ||
+                currentMouse.RightButton == ButtonState.Pressed || currentKeyboard.GetPressedKeyCount() > 0) && !pressed)
             { 
                 pressed = true;
                 bool clicked = false;
                 foreach ((onClick, Func<int, int, Boolean>) mouseEvent in registeredFunctions)
                 {
-                    if (mouseEvent.Item2(currentState.Position.X, currentState.Position.Y))
+                    if (mouseEvent.Item2(currentMouse.Position.X, currentMouse.Position.Y))
                     {
-                        UIHexState.handle_input(this, mouseEvent.Item1(), currentState);
+                        UIHexState.handle_input(this, mouseEvent.Item1(), currentMouse, currentKeyboard);
                         clicked = true;
                     }
                 }
@@ -54,8 +52,8 @@ namespace Hexaplicate.UI
                     UIHexState = UIManagerState.waitingState;
                 }
             }
-            if(currentState.LeftButton == ButtonState.Released &&
-                currentState.RightButton == ButtonState.Released)
+            if(currentMouse.LeftButton == ButtonState.Released &&
+                currentMouse.RightButton == ButtonState.Released && currentKeyboard.GetPressedKeyCount() == 0)
             {
                 pressed = false;
             }

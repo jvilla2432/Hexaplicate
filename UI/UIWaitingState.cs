@@ -9,7 +9,7 @@ namespace Hexaplicate.UI
 {
     internal class UIWaitingState : UIManagerState
     {
-        void UIManagerState.handle_input(UIManager manager, (HexagonContainer, (int, int)) container, MouseState state)
+        void UIManagerState.handle_input(UIManager manager, (HexagonContainer, (int, int)) container, MouseState state, KeyboardState keyboardState)
         {
             if(state.LeftButton == ButtonState.Pressed)
             {
@@ -17,7 +17,7 @@ namespace Hexaplicate.UI
             }
             if(state.RightButton == ButtonState.Pressed)
             {
-                manager.UIHexState = UIManagerState.displayingState;
+                manager.UIHexState = UIManagerState.displayingState.setDisplay(container);
             }
         }
     }

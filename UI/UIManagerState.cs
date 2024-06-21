@@ -14,7 +14,7 @@ namespace Hexaplicate.UI
         public static UIClickedState clickedState = new();
         public static UIDisplayingState displayingState = new();
 
-        public void handle_input(UIManager manager, (HexagonContainer, (int, int)) hex, MouseState state);
+        public void handle_input(UIManager manager, (HexagonContainer, (int, int)) hex, MouseState mouseState, KeyboardState keyboardState);
 
         public void Draw(SpriteBatch batch) { }
 

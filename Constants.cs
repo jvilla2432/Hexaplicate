@@ -20,7 +20,9 @@ namespace Hexaplicate
     internal static class Constants
     {
         internal static readonly int NUM_RESOURCES = 1;
+        internal static readonly string[] RESOURCE_NAMES = { " Mana " };
         internal static readonly int NUM_ESSENCES = 1;
+        internal static readonly string[] ESSENCE_NAMES = { " Essence " };
         internal static readonly int MAX_ESSENCE = 100;
         internal static readonly int HEXAGON_RADIUS = 25;
         internal static readonly int HEXAGON_SIZE = HEXAGON_RADIUS * 2;
@@ -31,5 +33,10 @@ namespace Hexaplicate
             (int)(HEXAGON_IMG_SIZE.Item2 * HEXAGON_SCALE));
 
         internal static readonly Essence[] essences = { new Essence1() };
+        internal static readonly (int, int) SCREEN_SIZE = (1280, 720);
+        internal static readonly (float, float) GRID_OFFSET = (0.3f, 0.5f);
+        internal static readonly (float, float) INVENTORY_GRID_OFFSET = (0.8f, 0.1f);
+        internal static readonly (float, float) INVENTORY_DISPLAY_OFFSET = (0.8f, 0.5f);
+
     }
 }
