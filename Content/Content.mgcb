@@ -56,6 +56,9 @@
 /processorParam:TextureFormat=Compressed
 /build:File.spritefont
 
+#begin Recipes/Recipe1.xml
+/copy:Recipes/Recipe1.xml
+
 #begin UIColor.png
 /importer:TextureImporter
 /processor:TextureProcessor

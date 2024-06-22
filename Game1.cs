@@ -49,7 +49,7 @@ namespace Hexaplicate
             Grid.SetTexture( Content.Load<Texture2D>("connectionConnected") );
             UI.UIInfoDisplay.SetTexture(new Texture2D[] { Content.Load<Texture2D>("UIColor") });
             UI.UIInfoDisplay.font = Content.Load<SpriteFont>("file");
-
+            RecipeParser.parseRecipe("Content/Recipes/Recipe1.xml");
         }
 
         protected override void Update(GameTime gameTime)
