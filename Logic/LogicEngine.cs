@@ -9,24 +9,30 @@ namespace Hexaplicate.Logic
     internal class LogicEngine
     {
         //
-        public void RunEssence(float deltaT)
+        int timeSinceTick = 0;
+        public void RunEssence(int deltaT)
         {
-            List<List<(Grid, (int, int))>> depthList = new();
-            Grid.BFS(depthList);
-            foreach(List<(Grid, (int, int))> depth in depthList)
+            timeSinceTick += deltaT;
+            if(timeSinceTick > 1000)
             {
-                foreach((Grid,(int,int)) hex in depth)
+                timeSinceTick -= 1000;
+                List<List<(Grid, (int, int))>> depthList = new();
+                Grid.BFS(depthList);
+                foreach (List<(Grid, (int, int))> depth in depthList)
                 {
-                    Hexagon baseHex = hex.Item1.getHexagon(hex.Item2);
-                    if(baseHex is EssenceHexagon)
+                    foreach ((Grid, (int, int)) hex in depth)
                     {
-                        EssenceHexagon essHex = (EssenceHexagon)baseHex;
-                        for (EssenceType essType = 0; (int)essType < Constants.NUM_ESSENCES; essType++)
+                        Hexagon baseHex = hex.Item1.getHexagon(hex.Item2);
+                        if (baseHex is EssenceHexagon)
                         {
-                            Essence ess = Essence.essences[(int)essType];
-                            ess.performEffect(hex.Item1, hex.Item2, deltaT, essHex.getEssence(essType));
-                        }
+                            EssenceHexagon essHex = (EssenceHexagon)baseHex;
+                            for (EssenceType essType = 0; (int)essType < Constants.NUM_ESSENCES; essType++)
+                            {
+                                Essence ess = Essence.essences[(int)essType];
+                                ess.performEffect(hex.Item1, hex.Item2, deltaT, essHex.getEssence(essType));
+                            }
 
+                        }
                     }
                 }
             }

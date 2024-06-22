@@ -1,0 +1,20 @@
+<?xml version = "1.0" encoding="utf-8"?>
+
+<recipe>
+  <name>Mana Crystalization</name>
+  <description>Solidify mana into the fundamental essence</description> 
+  <inputs>
+    <pair>
+      <Resource>0</Resource>
+      <Amount>15</Amount>
+      <Type>Resource</Type>
+    </pair>
+  </inputs>
+  <outputs>
+    <pair>
+      <Resource>0</Resource>
+      <Amount>1</Amount>
+      <Type>Essence</Type>
+    </pair>
+  </outputs>
+</recipe>

@@ -20,6 +20,8 @@ namespace Hexaplicate
     {
         internal static readonly int NUM_RESOURCES = 1;
         internal static readonly string[] RESOURCE_NAMES = { " Mana " };
+        // Type : 0 is resource, 1 is essence
+        internal static Recipe[] recipes;
         internal static readonly int NUM_ESSENCES = 1;
         internal static readonly string[] ESSENCE_NAMES = { " Essence " };
         internal static readonly int MAX_ESSENCE = 100;
