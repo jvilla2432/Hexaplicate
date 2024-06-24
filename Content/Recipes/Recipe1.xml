@@ -1,8 +1,8 @@
 <?xml version = "1.0" encoding="utf-8"?>
-
 <recipe>
   <name>Mana Crystalization</name>
   <description>Solidify mana into the fundamental essence</description> 
+  <tick>5</tick>
   <inputs>
     <pair>
       <Resource>0</Resource>

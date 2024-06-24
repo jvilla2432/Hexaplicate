@@ -6,12 +6,22 @@ using System.Threading.Tasks;
 
 namespace Hexaplicate
 {
-    internal struct Recipe
+    // Type : 0 is resource, 1 is essence
+    internal readonly struct Recipe
     {
-        public int ticks;
-        public string name;
-        public string description;
-        public (int resource, int cost, bool type)[] inputs;
-        public (int resource, int cost, bool type)[] outputs;
+        public Recipe(int ticks, string name, string description,
+            (int resource, int cost, bool type)[] inputs, (int resource, int cost, bool type)[] outputs)
+        {
+            Ticks = ticks;
+            Name = name;
+            Description = description;
+            Inputs = inputs;
+            Outputs = outputs;
+        }
+        public int Ticks { get; init;  }
+        public string Name { get; init; }
+        public string Description { get; init; }
+        public (int resource, int cost, bool type)[] Inputs { get; init; }
+        public (int resource, int cost, bool type)[] Outputs { get; init; }
     }
 }
