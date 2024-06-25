@@ -46,6 +46,7 @@ namespace Hexaplicate
             // TODO: use this.Content to load your game content here
             EssenceHexagon.SetTexture(new Texture2D[] { Content.Load<Texture2D>("alphaHexagon") });
             EmptyHexagon.SetTexture(new Texture2D[] { Content.Load<Texture2D>("centerHexagon") });
+            RecipeHexagon.SetTexture(new Texture2D[] { Content.Load<Texture2D>("yellowHexagon") });
             Grid.SetTexture( Content.Load<Texture2D>("connectionConnected") );
             UI.UIInfoDisplay.SetTexture(new Texture2D[] { Content.Load<Texture2D>("UIColor") });
             UI.UIInfoDisplay.font = Content.Load<SpriteFont>("file");

@@ -29,9 +29,21 @@ namespace Hexaplicate.Logic
                             for (EssenceType essType = 0; (int)essType < Constants.NUM_ESSENCES; essType++)
                             {
                                 Essence ess = Essence.essences[(int)essType];
-                                ess.performEffect(hex.Item1, hex.Item2, deltaT, essHex.getEssence(essType));
+                                ess.performEffect(hex, essHex.getEssence(essType));
                             }
-
+                            continue;
+                        }
+                        if(baseHex is RecipeHexagon)
+                        {
+                            RecipeHexagon recHex = (RecipeHexagon)baseHex;
+                            foreach(var neighbor in hex.Item1.getNeighbors(hex.Item2))
+                            {
+                                Hexagon adj = Grid.getHexagon(neighbor);
+                                if(adj is EssenceHexagon)
+                                {
+                                    recHex.ExecuteRecipe((EssenceHexagon)adj);
+                                }
+                            }
                         }
                     }
                 }

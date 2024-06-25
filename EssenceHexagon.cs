@@ -28,6 +28,35 @@ namespace Hexaplicate
 		}
 
 
+		/// <summary>
+		/// Attempts to execute the recipe.
+		/// </summary>
+		/// <param name="recipeID">Recipe to attempt</param>
+		/// <returns>True and mutates hexagon if sufficient resources, false and doesn't mutate if insufficient resources</returns>
+		public bool attemptRecipe(int recipeID)
+        {
+			Recipe recipe = Constants.recipes[recipeID];
+			foreach(var (resource, cost, type) in recipe.Inputs)
+            {
+				int amount = type ? getEssence((EssenceType)resource) : getResource((ResourceType)resource);
+				if (amount < cost)
+				{
+					return false;
+				}
+			}
+			foreach (var (resource, cost, type) in recipe.Inputs)
+			{
+				_ = type ? AddEssence((EssenceType)resource, -cost) : AddResource((ResourceType)resource, -cost);
+			}
+
+			foreach (var (resource,cost, type) in recipe.Outputs)
+            {
+				_ = type ? AddEssence((EssenceType)resource, cost) : AddResource((ResourceType)resource, cost);
+            }
+			return true;
+		}
+
+
 		public EssenceHexagon()
         {
 			for (int i = 0; i < Constants.NUM_RESOURCES; i++)
@@ -45,10 +74,11 @@ namespace Hexaplicate
 		/// Attempts to add essenceAmount of essence to this hexagon. Returns true if sucessfully added and mutates Hexagon,
 		/// returns false is fails.
 		/// </summary>
-		internal Boolean AddEssence(EssenceType essence, int essenceAmount)
+		internal bool AddEssence(EssenceType essence, int essenceAmount)
 		{
 			int totalEssenceValue = essences.Aggregate((total, current) => total + current);
-			if (Constants.MAX_ESSENCE < essenceAmount + totalEssenceValue)
+			int expected = essenceAmount + totalEssenceValue;
+			if (Constants.MAX_ESSENCE < expected || expected < 0)
 			{
 				return false;
 			}
@@ -56,10 +86,15 @@ namespace Hexaplicate
 			return true;
 		}
 
-		public void AddResource(ResourceType resource, int resourceAmount)
+		public bool AddResource(ResourceType resource, int resourceAmount)
         {
-			resources[(int)resource] += resourceAmount;
-        }
+			if(resources[(int)resource] + resourceAmount < 0)
+            {
+				return false;
+            }
+			resources[(int)resource] = resources[(int)resource] + resourceAmount;
+			return true;
+		}
 
 		public static void SetTexture(Texture2D[] texture)
         {

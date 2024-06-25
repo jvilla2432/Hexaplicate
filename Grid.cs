@@ -243,5 +243,10 @@ namespace Hexaplicate
             }
             return false;
         }
+
+        public static Hexagon getHexagon( (Grid, (int, int)) pair)
+        {
+            return pair.Item1.getHexagon(pair.Item2);
+        }
     }
 }

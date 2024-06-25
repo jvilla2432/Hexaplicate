@@ -9,12 +9,12 @@ namespace Hexaplicate
 {
     internal class Essence1 : Essence
     {
-        void Essence.performEffect(Grid grid, (int, int) hexCoordinate, float deltaT, float strength) { 
-
-            if(grid.getHexagon(hexCoordinate) is EssenceHexagon)
+        void Essence.performEffect( (Grid,(int, int)) hex, int strength) {
+            Hexagon hexa = Grid.getHexagon(hex);
+            if(hexa is EssenceHexagon)
             {
-                EssenceHexagon hex = (EssenceHexagon)grid.getHexagon(hexCoordinate);
-                hex.AddResource(ResourceType.Resource1, 1);
+                EssenceHexagon essHex = (EssenceHexagon)hexa;
+                essHex.AddResource(ResourceType.Resource1, strength);
             }
         }
     }
