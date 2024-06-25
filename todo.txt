@@ -2,7 +2,7 @@
 
 UI:
 Setting recipes
-Entering fractal hexagons
+Exiting fractal hexagons/fractal map?
 
 Mechanics:
 Fractal hexagons

@@ -13,7 +13,8 @@ namespace Hexaplicate
     internal class Grid : HexagonContainer
     {
         private Hexagon[,] gridHexagons = new Hexagon[7,7];
-        private (int, int) coordinates = (0, 0);
+        private (int, int) coordinates = ((int)(Constants.SCREEN_SIZE.Item1 * Constants.GRID_OFFSET.Item1),
+                (int)(Constants.SCREEN_SIZE.Item2 * Constants.GRID_OFFSET.Item2));
         private Dictionary<(int, int), List<(int, int)>> adjList = new();
         private static Texture2D connectionTexure;
         private static Grid centerGrid;
@@ -139,6 +140,7 @@ namespace Hexaplicate
 
         public void RegisterHexs(Hexaplicate.UI.UIManager manager)
         {
+            manager.resetHexClick();
             foreach (var pair in returnHexagonPairs())
             {
                 int i = pair.Item1;
@@ -154,7 +156,7 @@ namespace Hexaplicate
                 (HexagonContainer, (int,int)) clickFunction() {
                     return (this, (localI, localJ));
                 }
-                manager.registerClick(clickFunction, 
+                manager.registerHexClick(clickFunction, 
                     HexagonOperations.HexagonHitBox(Constants.HEXAGON_SIZE/2, pixelInt));  
             }
         }

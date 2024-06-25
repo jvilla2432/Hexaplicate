@@ -15,6 +15,8 @@ namespace Hexaplicate.UI
         public delegate (HexagonContainer,(int,int)) onClick();
         bool pressed = false;
         private List<(onClick, Func<int,int,bool>)> registeredFunctions = new();
+        private List<(onClick, Func<int, int, bool>)> InvFunctions = new();
+        private List<(onClick, Func<int, int, bool>)> HexFunctions = new();
         public UIManagerState UIHexState = UIManagerState.waitingState;
 
         
@@ -51,7 +53,14 @@ namespace Hexaplicate.UI
                 currentMouse.RightButton == ButtonState.Pressed || currentKeyboard.GetPressedKeyCount() > 0) && !pressed)
             { 
                 pressed = true;
-                UIHexState.mouseInput(currentMouse);
+                if(currentKeyboard.GetPressedKeyCount() > 0)
+                {
+                    UIHexState.keyboardInput(currentKeyboard);
+                }
+                else
+                {
+                    UIHexState.mouseInput(currentMouse);
+                }
             }
             if(currentMouse.LeftButton == ButtonState.Released &&
                 currentMouse.RightButton == ButtonState.Released && currentKeyboard.GetPressedKeyCount() == 0)
@@ -60,15 +69,34 @@ namespace Hexaplicate.UI
             }
         }
 
+
+        private void updateFunctions()
+        {
+            registeredFunctions.Clear();
+            registeredFunctions.AddRange(InvFunctions);
+            registeredFunctions.AddRange(HexFunctions);
+        }
         /// <summary>
         /// Registers a click function to be executed whenever the mouse sastifies clickCoordinates 
         /// </summary>
         /// <param name="clickFunction">Function to be called when clickCoordinates evalautes to true</param>
         /// <param name="clickCoordinates">Takes in an x and a y parameter and returns True if clickFunction should be called</param>
-        public void registerClick(onClick clickFunction, Func<int,int,Boolean> clickCoordinates){
-            registeredFunctions.Add((clickFunction,clickCoordinates)); 
+        public void registerInvClick(onClick clickFunction, Func<int,int,Boolean> clickCoordinates){
+            InvFunctions.Add((clickFunction,clickCoordinates));
+            updateFunctions();
         }
 
-        
+        public void registerHexClick(onClick clickFunction, Func<int, int, Boolean> clickCoordinates)
+        {
+            HexFunctions.Add((clickFunction, clickCoordinates));
+            updateFunctions();
+        }
+
+        public void resetHexClick()
+        {
+            HexFunctions.Clear();
+            updateFunctions();
+        }
+
     }
 }

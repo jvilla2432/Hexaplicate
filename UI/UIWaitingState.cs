@@ -25,5 +25,24 @@ namespace Hexaplicate.UI
                 }
             }
         }
+
+        void UIManagerState.keyboardInput(KeyboardState keyboardState)
+        {
+            var container = UIManagerState.manager.checkHexes();
+            if(container != null)
+            {
+                var hex = container ?? throw new Exception();
+                if (keyboardState.IsKeyDown(Keys.X))
+                {
+                    var hexagon = hex.Item1.getHexagon(hex.Item2);
+                    if(hexagon is FractalHexagon)
+                    {
+                        System.Diagnostics.Debug.WriteLine("test");
+                        var fractalHex = (FractalHexagon)hexagon;
+                        Game1.game.SetGrid(fractalHex.grid);
+                    }
+                }
+            }
+        }
     }
 }

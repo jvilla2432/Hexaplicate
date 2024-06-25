@@ -14,9 +14,16 @@ namespace Hexaplicate
         private UI.UIManager _uiManager;
         private Inventory _inventory;
         private Logic.LogicEngine _logicEngine;
+        public static Game1 game;
 
+        internal void SetGrid(Grid newGrid)
+        {
+            _grid = newGrid;
+            _grid.RegisterHexs(_uiManager);
+        }
         public Game1()
         {
+            game = this;
             _graphics = new GraphicsDeviceManager(this);
             _graphics.PreferredBackBufferWidth = Constants.SCREEN_SIZE.Item1;
             _graphics.PreferredBackBufferHeight = Constants.SCREEN_SIZE.Item2;
@@ -27,13 +34,10 @@ namespace Hexaplicate
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            _grid = new Grid(true);
             _uiManager = new UI.UIManager();
             _inventory = new Inventory();
             _logicEngine = new Logic.LogicEngine();
-            _grid.setCoordinates((  (int)(Constants.SCREEN_SIZE.Item1 * Constants.GRID_OFFSET.Item1),
-                (int)(Constants.SCREEN_SIZE.Item2 * Constants.GRID_OFFSET.Item2)));
-            _grid.RegisterHexs(_uiManager);
+            SetGrid(new Grid(true));
             _inventory.setCoordinates(((int)(Constants.SCREEN_SIZE.Item1 * Constants.INVENTORY_GRID_OFFSET.Item1),
                 (int)(Constants.SCREEN_SIZE.Item2 * Constants.INVENTORY_GRID_OFFSET.Item2)));
             _inventory.RegisterHexs(_uiManager);
@@ -47,6 +51,7 @@ namespace Hexaplicate
             EssenceHexagon.SetTexture(new Texture2D[] { Content.Load<Texture2D>("alphaHexagon") });
             EmptyHexagon.SetTexture(new Texture2D[] { Content.Load<Texture2D>("centerHexagon") });
             RecipeHexagon.SetTexture(new Texture2D[] { Content.Load<Texture2D>("yellowHexagon") });
+            FractalHexagon.SetTexture(new Texture2D[] { Content.Load<Texture2D>("betaHexagon") });
             Grid.SetTexture( Content.Load<Texture2D>("connectionConnected") );
             UI.UIInfoDisplay.SetTexture(new Texture2D[] { Content.Load<Texture2D>("UIColor") });
             UI.UIInfoDisplay.font = Content.Load<SpriteFont>("file");
