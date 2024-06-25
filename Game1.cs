@@ -21,6 +21,10 @@ namespace Hexaplicate
             _grid = newGrid;
             _grid.RegisterHexs(_uiManager);
         }
+        internal void returnParentGrid()
+        {
+            _grid.switchParent();
+        }
         public Game1()
         {
             game = this;

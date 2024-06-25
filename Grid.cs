@@ -18,7 +18,16 @@ namespace Hexaplicate
         private Dictionary<(int, int), List<(int, int)>> adjList = new();
         private static Texture2D connectionTexure;
         private static Grid centerGrid;
+        public Grid? parentGrid;
 
+
+        public void switchParent()
+        {
+            if(parentGrid != null)
+            {
+                Game1.game.SetGrid(parentGrid);
+            }
+        }
         public static void SetTexture(Texture2D texture)
         {
             connectionTexure = texture;

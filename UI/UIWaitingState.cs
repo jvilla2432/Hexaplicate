@@ -32,16 +32,20 @@ namespace Hexaplicate.UI
             if(container != null)
             {
                 var hex = container ?? throw new Exception();
-                if (keyboardState.IsKeyDown(Keys.X))
+                if (keyboardState.IsKeyDown(Keys.X) && hex.Item1 is Grid)
                 {
                     var hexagon = hex.Item1.getHexagon(hex.Item2);
                     if(hexagon is FractalHexagon)
                     {
                         System.Diagnostics.Debug.WriteLine("test");
                         var fractalHex = (FractalHexagon)hexagon;
-                        Game1.game.SetGrid(fractalHex.grid);
+                        fractalHex.switchGrid((Grid)hex.Item1);
                     }
                 }
+            }
+            if (keyboardState.IsKeyDown(Keys.B))
+            {
+                Game1.game.returnParentGrid();
             }
         }
     }

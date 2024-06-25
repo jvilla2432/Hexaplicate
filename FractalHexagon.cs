@@ -32,5 +32,11 @@ namespace Hexaplicate
             batch.Draw(hexagonTexture[0], new Rectangle(xOffset, yOffset,
                 Constants.ADJUSTED_HEX_SIZE.Item1, Constants.ADJUSTED_HEX_SIZE.Item2), Color.White);
         }
+
+        internal void switchGrid(Grid parent)
+        {
+            grid.parentGrid = parent;
+            Game1.game.SetGrid(grid);
+        }
     }
 }
