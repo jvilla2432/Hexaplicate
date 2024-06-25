@@ -1,3 +1,16 @@
 ﻿TODO::
-Add Essence logic
-Add UI info popups when right clicking a hexagon
+
+UI:
+Setting recipes
+Entering fractal hexagons
+
+Mechanics:
+Fractal hexagons
+Blank hexagons
+
+Automation mechanics:
+Autogenerate hexagons
+Clone fractals
+
+Essences:
+ ??

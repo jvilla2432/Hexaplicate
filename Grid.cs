@@ -213,7 +213,7 @@ namespace Hexaplicate
                 {
                     FractalHexagon fractalHex = (FractalHexagon)getHexagon(neighbor);
                     (int, int) wrapped = HexagonOperations.FractalHex((neighbor.Item1 - hex.Item1, neighbor.Item2 - hex.Item2));
-                    yield return (fractalHex.getGrid(), wrapped);
+                    yield return (fractalHex.grid, wrapped);
                 }
                 yield return (this,neighbor);
             }

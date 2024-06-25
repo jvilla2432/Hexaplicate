@@ -18,15 +18,28 @@ namespace Hexaplicate.UI
         public UIManagerState UIHexState = UIManagerState.waitingState;
 
         
+        public UIManager()
+        {
+            UIManagerState.manager = this;
+        }
         public void Draw(SpriteBatch batch)
         {
             UIHexState.Draw(batch);
         }
 
-        public static void checkHexes()
+        public (HexagonContainer, (int, int))? checkHexes()
         {
-
+            MouseState currentMouse = Mouse.GetState();
+            foreach ((onClick, Func<int, int, Boolean>) mouseEvent in registeredFunctions)
+            {
+                if (mouseEvent.Item2(currentMouse.Position.X, currentMouse.Position.Y))
+                {
+                    return mouseEvent.Item1();
+                }
+            }
+            return null;
         }
+
         /// <summary>
         /// Checks the current inputs and calls all necessary callback functions for hexagons
         /// </summary>
@@ -38,19 +51,7 @@ namespace Hexaplicate.UI
                 currentMouse.RightButton == ButtonState.Pressed || currentKeyboard.GetPressedKeyCount() > 0) && !pressed)
             { 
                 pressed = true;
-                bool clicked = false;
-                foreach ((onClick, Func<int, int, Boolean>) mouseEvent in registeredFunctions)
-                {
-                    if (mouseEvent.Item2(currentMouse.Position.X, currentMouse.Position.Y))
-                    {
-                        UIHexState.handle_input(this, mouseEvent.Item1(), currentMouse, currentKeyboard);
-                        clicked = true;
-                    }
-                }
-                if (!clicked)
-                {
-                    UIHexState = UIManagerState.waitingState;
-                }
+                UIHexState.mouseInput(currentMouse);
             }
             if(currentMouse.LeftButton == ButtonState.Released &&
                 currentMouse.RightButton == ButtonState.Released && currentKeyboard.GetPressedKeyCount() == 0)

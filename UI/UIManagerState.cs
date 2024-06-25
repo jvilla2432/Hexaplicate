@@ -13,8 +13,10 @@ namespace Hexaplicate.UI
         public static UIWaitingState waitingState = new();
         public static UIClickedState clickedState = new();
         public static UIDisplayingState displayingState = new();
+        public static UIManager manager;
 
-        public void handle_input(UIManager manager, (HexagonContainer, (int, int)) hex, MouseState mouseState, KeyboardState keyboardState);
+        public void mouseInput(MouseState mouseState) { }
+        public void keyboardInput(KeyboardState keyboardState) { }
 
         public void Draw(SpriteBatch batch) { }
 

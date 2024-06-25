@@ -9,15 +9,20 @@ namespace Hexaplicate.UI
 {
     internal class UIWaitingState : UIManagerState
     {
-        void UIManagerState.handle_input(UIManager manager, (HexagonContainer, (int, int)) container, MouseState state, KeyboardState keyboardState)
+        void UIManagerState.mouseInput(MouseState state)
         {
-            if(state.LeftButton == ButtonState.Pressed)
+            var container = UIManagerState.manager.checkHexes();
+            if (container != null)
             {
-                manager.UIHexState = UIManagerState.clickedState.setClicked(container);
-            }
-            if(state.RightButton == ButtonState.Pressed)
-            {
-                manager.UIHexState = UIManagerState.displayingState.setDisplay(container);
+                var hex = container ?? throw new Exception();
+                if (state.LeftButton == ButtonState.Pressed)
+                {
+                    UIManagerState.manager.UIHexState = UIManagerState.clickedState.setClicked(hex);
+                }
+                if (state.RightButton == ButtonState.Pressed)
+                {
+                    UIManagerState.manager.UIHexState = UIManagerState.displayingState.setDisplay(hex);
+                }
             }
         }
     }

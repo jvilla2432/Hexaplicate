@@ -44,10 +44,11 @@ namespace Hexaplicate.UI
             return this;
         }
 
-        void UIManagerState.handle_input(UIManager manager, (HexagonContainer, (int, int)) hex, MouseState state, KeyboardState keyboardState)
+        void UIManagerState.mouseInput(MouseState state)
         {
-            manager.UIHexState = UIManagerState.waitingState;
+            UIManagerState.manager.UIHexState = UIManagerState.waitingState;
         }
+
         void UIManagerState.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch batch)
         {
             int numStats = Math.Min(statsList.Count, (currentScreen * 5) + 5) - currentScreen * 5;

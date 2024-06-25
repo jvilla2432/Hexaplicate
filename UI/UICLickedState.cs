@@ -16,28 +16,34 @@ namespace Hexaplicate.UI
             prevClicked = prevC;
             return this;
         }
-        void UIManagerState.handle_input(UIManager manager, (HexagonContainer, (int, int)) current, MouseState state, KeyboardState keyboardState)
+        void UIManagerState.mouseInput(MouseState state)
         {
-            Hexagon prevHex = prevClicked.Item1.getHexagon(prevClicked.Item2);
-            Hexagon currentHex = current.Item1.getHexagon(current.Item2);
-            if (state.LeftButton == ButtonState.Pressed)
+            UIManager manager = UIManagerState.manager;
+            var pontHex = manager.checkHexes();
+            if(pontHex != null)
             {
-                prevClicked.Item1.setHexagon(prevClicked.Item2, currentHex);
-                current.Item1.setHexagon(current.Item2, prevHex);
-            }
-            else if (state.RightButton == ButtonState.Pressed)
-            {
-                if (prevClicked.Item1 is Grid && current.Item1 == prevClicked.Item1
-                    && HexagonOperations.CheckAdjancency(prevClicked.Item2, current.Item2))
+                Hexagon prevHex = prevClicked.Item1.getHexagon(prevClicked.Item2);
+                var current = pontHex ?? throw new Exception();
+                Hexagon currentHex = current.Item1.getHexagon(current.Item2);
+                if (state.LeftButton == ButtonState.Pressed)
                 {
-                    Grid grid = (Grid)prevClicked.Item1;
-                    if (!grid.checkConnection(current.Item2, prevClicked.Item2))
+                    prevClicked.Item1.setHexagon(prevClicked.Item2, currentHex);
+                    current.Item1.setHexagon(current.Item2, prevHex);
+                }
+                else if (state.RightButton == ButtonState.Pressed)
+                {
+                    if (prevClicked.Item1 is Grid && current.Item1 == prevClicked.Item1
+                        && HexagonOperations.CheckAdjancency(prevClicked.Item2, current.Item2))
                     {
-                        grid.toggleConnection(prevClicked.Item2, current.Item2);
-                        if (Grid.checkCycle((grid, current.Item2),
-                            (grid, prevClicked.Item2)))
+                        Grid grid = (Grid)prevClicked.Item1;
+                        if (!grid.checkConnection(current.Item2, prevClicked.Item2))
                         {
                             grid.toggleConnection(prevClicked.Item2, current.Item2);
+                            if (Grid.checkCycle((grid, current.Item2),
+                                (grid, prevClicked.Item2)))
+                            {
+                                grid.toggleConnection(prevClicked.Item2, current.Item2);
+                            }
                         }
                     }
                 }
