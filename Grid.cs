@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
@@ -10,17 +11,26 @@ using Microsoft.Xna.Framework.Graphics;
 //shoutout to https://www.redblobgames.com/grids/hexagons/
 namespace Hexaplicate
 {
+    [DataContract]
     internal class Grid : HexagonContainer
     {
-        private Hexagon[,] gridHexagons = new Hexagon[7,7];
-        private (int, int) coordinates = ((int)(Constants.SCREEN_SIZE.Item1 * Constants.GRID_OFFSET.Item1),
+        private static (int x, int y) HexagonSize = (7, 7);
+        [DataMember]
+        private Hexagon[][] gridHexagons = new Hexagon[HexagonSize.x][];
+        private static (int, int) coordinates = ((int)(Constants.SCREEN_SIZE.Item1 * Constants.GRID_OFFSET.Item1),
                 (int)(Constants.SCREEN_SIZE.Item2 * Constants.GRID_OFFSET.Item2));
+        [DataMember]
         private Dictionary<(int, int), List<(int, int)>> adjList = new();
         private static Texture2D connectionTexure;
-        private static Grid centerGrid;
-        public Grid? parentGrid;
+        [IgnoreDataMember]
+        public static Grid centerGrid;
+        private Grid? parentGrid;
 
 
+        public void setParent(Grid grid)
+        {
+            parentGrid = grid;
+        }
         public void switchParent()
         {
             if(parentGrid != null)
@@ -35,11 +45,11 @@ namespace Hexaplicate
 
         public Hexagon getHexagon((int, int) coords)
         {
-            return gridHexagons[coords.Item1, coords.Item2];
+            return gridHexagons[coords.Item1][coords.Item2];
         }
         public void setHexagon((int, int) coords, Hexagon hex)
         {
-            gridHexagons[coords.Item1, coords.Item2] = hex;
+            gridHexagons[coords.Item1][coords.Item2] = hex;
         }
 
         public bool toggleConnection((int,int) hex1, (int,int) hex2)
@@ -90,10 +100,14 @@ namespace Hexaplicate
             {
                 centerGrid = this;
             }
-            //Only sums greater than 2 or less than 10 map to valid hexagon spots.
+            //Initialize
+            for(int x = 0; x < HexagonSize.x; x++)
+            {
+                gridHexagons[x] = new Hexagon[HexagonSize.y];
+            }
             foreach (var pair in returnHexagonPairs())
             {
-                gridHexagons[pair.Item1,pair.Item2] = new EmptyHexagon();
+                setHexagon(pair, new EmptyHexagon());
                 adjList[pair] = new List<(int, int)>();
             }
         }
@@ -105,8 +119,8 @@ namespace Hexaplicate
         /// <returns>Hexagon that was at coordinates</returns>
         public Hexagon swapHexagon(Hexagon newHex, (int,int) coordinates)
         {
-            Hexagon oldHex = gridHexagons[coordinates.Item1, coordinates.Item2];
-            gridHexagons[coordinates.Item1, coordinates.Item2] = newHex; 
+            Hexagon oldHex = getHexagon(coordinates);
+            setHexagon(coordinates, newHex);
             return oldHex;
         }
 
@@ -127,7 +141,7 @@ namespace Hexaplicate
                 int j = pair.Item2;
                 (float, float) pixel = HexagonOperations.AxialToPixel((i - 3) * (Constants.HEXAGON_GAP + 1), 
                     (j - 3) * (Constants.HEXAGON_GAP + 1));
-                gridHexagons[i, j].Draw(batch, (int)pixel.Item1 + coordinates.Item1, (int)pixel.Item2 + coordinates.Item2);
+                getHexagon(pair).Draw(batch, (int)pixel.Item1 + coordinates.Item1, (int)pixel.Item2 + coordinates.Item2);
                 foreach (var addConnection in adjList[pair])
                 {
                     (int, int) diff = (addConnection.Item1 - i, addConnection.Item2 - j);

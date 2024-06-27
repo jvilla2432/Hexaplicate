@@ -97,6 +97,11 @@ namespace Hexaplicate.UI
             HexFunctions.Clear();
             updateFunctions();
         }
+        public void resetInvCLick()
+        {
+            InvFunctions.Clear();
+            updateFunctions();
+        }
 
     }
 }

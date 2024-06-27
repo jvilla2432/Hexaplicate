@@ -47,6 +47,15 @@ namespace Hexaplicate.UI
             {
                 Game1.game.returnParentGrid();
             }
+            if (keyboardState.IsKeyDown(Keys.S))
+            {
+                Game1.game.Save();
+            }
+            if (keyboardState.IsKeyDown(Keys.L))
+            {
+                Game1.game.Load();
+            }
+
         }
     }
 }

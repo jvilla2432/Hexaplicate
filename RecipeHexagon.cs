@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace Hexaplicate
 {
+    [DataContract]
     internal class RecipeHexagon : Hexagon
     {
-
+        [DataMember]
         private int currentRecipe = 0;
         private static Texture2D[] hexagonTexture;
 

@@ -14,6 +14,7 @@ namespace Hexaplicate
         private UI.UIManager _uiManager;
         private Inventory _inventory;
         private Logic.LogicEngine _logicEngine;
+        private Hexaplicate.PerstState.Serializer _serializer;
         public static Game1 game;
 
         internal void SetGrid(Grid newGrid)
@@ -21,6 +22,13 @@ namespace Hexaplicate
             _grid = newGrid;
             _grid.RegisterHexs(_uiManager);
         }
+
+        internal void SetInventory(Inventory newInv)
+        {
+            _inventory = newInv;
+            _inventory.RegisterHexs(_uiManager);
+        }
+
         internal void returnParentGrid()
         {
             _grid.switchParent();
@@ -34,7 +42,22 @@ namespace Hexaplicate
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
+        public void Save()
+        {
+            _serializer.SaveGrid(Grid.centerGrid);
+            _serializer.SaveInventory(_inventory);
+            Debug.WriteLine("save");
+        }
 
+        public void Load()
+        {
+            Grid loadedGrid = _serializer.LoadGrid();
+            Grid.centerGrid = loadedGrid;
+            SetGrid(loadedGrid);
+            Inventory inventory = _serializer.LoadInventory();
+            SetInventory(inventory);
+            Debug.WriteLine("load");
+        }
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
@@ -45,6 +68,7 @@ namespace Hexaplicate
             _inventory.setCoordinates(((int)(Constants.SCREEN_SIZE.Item1 * Constants.INVENTORY_GRID_OFFSET.Item1),
                 (int)(Constants.SCREEN_SIZE.Item2 * Constants.INVENTORY_GRID_OFFSET.Item2)));
             _inventory.RegisterHexs(_uiManager);
+            _serializer = new PerstState.Serializer("saveTestOne");
             base.Initialize();
         }
 

@@ -6,14 +6,20 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
+
 
 namespace Hexaplicate
 {
+	[DataContract]
 	internal class EssenceHexagon : Hexagon
 	{
+		[DataMember]
 		private int[] resources = new int[Constants.NUM_RESOURCES];
+		[DataMember]
 		private int[] essences = new int[Constants.NUM_ESSENCES];
-		private Tuple<Hexagon, Boolean>[] neighbors = new Tuple<Hexagon, Boolean>[6];
+		[DataMember]
+		private Tuple<Hexagon, bool>[] neighbors = new Tuple<Hexagon, bool>[6];
 		private static Texture2D[] hexagonTexture;
 		  
 

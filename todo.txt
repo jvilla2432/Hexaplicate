@@ -2,15 +2,19 @@
 
 UI:
 Setting recipes
-Exiting fractal hexagons/fractal map?
+Fractal map?
 
 Mechanics:
-Fractal hexagons
 Blank hexagons
 
 Automation mechanics:
 Autogenerate hexagons
 Clone fractals
+
+Technicals:
+Refactor keys to be rebindable
+Finish documentation
+Refactor drawing code to use centered sprites
 
 Essences:
  ??
