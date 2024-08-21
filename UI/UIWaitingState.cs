@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,11 +30,12 @@ namespace Hexaplicate.UI
         void UIManagerState.keyboardInput(KeyboardState keyboardState)
         {
             var container = UIManagerState.manager.checkHexes();
-            if(container != null)
+            if (container != null)
             {
                 var hex = container ?? throw new Exception();
                 if (keyboardState.IsKeyDown(Keys.X) && hex.Item1 is Grid)
                 {
+                    Debug.WriteLine("amost");
                     var hexagon = hex.Item1.getHexagon(hex.Item2);
                     if(hexagon is FractalHexagon)
                     {

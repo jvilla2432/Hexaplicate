@@ -3,6 +3,7 @@
 UI:
 Setting recipes
 Fractal map?
+Add info(recipe book, hexagon descriptions)
 
 Mechanics:
 Blank hexagons
